@@ -8,7 +8,9 @@ namespace CsvHelper.FastDynamicReader
     {
         public static IEnumerable<dynamic> GetRecords(this CsvReader csvReader)
         {
-            if (csvReader.Context.ReaderConfiguration.HasHeaderRecord && csvReader.Context.HeaderRecord == null)
+            var context = csvReader.Context;
+
+            if (context.ReaderConfiguration.HasHeaderRecord && context.HeaderRecord == null)
             {
                 if (!csvReader.Read())
                 {
@@ -18,10 +20,9 @@ namespace CsvHelper.FastDynamicReader
                 csvReader.ReadHeader();
             }
 
-            var csvTable = new CsvHeader(csvReader.Context
-                                                  .HeaderRecord
-                                                  .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
-                                                  .ToArray());
+            var csvTable = new CsvHeader(context.HeaderRecord
+                                                .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                                .ToArray());
 
             while (csvReader.Read())
             {
@@ -29,7 +30,7 @@ namespace CsvHelper.FastDynamicReader
 
                 try
                 {
-                    var values = new object[csvReader.Context.HeaderRecord.Length];
+                    var values = new object[context.HeaderRecord.Length];
 
                     for (int i = 0; i < values.Length; i++)
                     {
@@ -40,9 +41,9 @@ namespace CsvHelper.FastDynamicReader
                 }
                 catch (Exception ex)
                 {
-                    var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
+                    var readerException = new ReaderException(context, "An unexpected error occurred.", ex);
 
-                    if (csvReader.Context.ReaderConfiguration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
+                    if (context.ReaderConfiguration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
                     {
                         throw readerException;
                     }

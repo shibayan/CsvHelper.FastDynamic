@@ -8,6 +8,8 @@ namespace CsvHelper.FastDynamicReader
         private string[] _fieldNames;
         private readonly Dictionary<string, int> _fieldNameLookup;
 
+        public string[] FieldNames => _fieldNames;
+
         public CsvHeader(string[] fieldNames)
         {
             _fieldNames = fieldNames ?? throw new ArgumentNullException(nameof(fieldNames));
@@ -51,7 +53,5 @@ namespace CsvHelper.FastDynamicReader
 
             return oldLength;
         }
-
-        public string[] FieldNames => _fieldNames;
     }
 }

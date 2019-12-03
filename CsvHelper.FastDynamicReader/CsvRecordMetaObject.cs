@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,8 +11,6 @@ namespace CsvHelper.FastDynamicReader
         private static readonly MethodInfo _getValueMethod = typeof(IDictionary<string, object>).GetProperty("Item").GetGetMethod();
         private static readonly MethodInfo _setValueMethod = typeof(CsvRecord).GetMethod("SetValue", new[] { typeof(string), typeof(object) });
 
-        private static readonly string[] EmptyKeys = new string[0];
-
         public CsvRecordMetaObject(Expression expression, BindingRestrictions restrictions, object value)
             : base(expression, restrictions, value)
         {
@@ -20,10 +19,7 @@ namespace CsvHelper.FastDynamicReader
         private DynamicMetaObject CallMethod(MethodInfo method, Expression[] parameters)
         {
             var callMethod = new DynamicMetaObject(
-                Expression.Call(
-                    Expression.Convert(Expression, LimitType),
-                    method,
-                    parameters),
+                Expression.Call(Expression.Convert(Expression, LimitType), method, parameters),
                 BindingRestrictions.GetTypeRestriction(Expression, LimitType)
             );
 
@@ -63,7 +59,7 @@ namespace CsvHelper.FastDynamicReader
 
         public override IEnumerable<string> GetDynamicMemberNames()
         {
-            return HasValue && Value is IDictionary<string, object> lookup ? lookup.Keys : EmptyKeys;
+            return HasValue && Value is IDictionary<string, object> lookup ? lookup.Keys : Array.Empty<string>();
         }
     }
 }
