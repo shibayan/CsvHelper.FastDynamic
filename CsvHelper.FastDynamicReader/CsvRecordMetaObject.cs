@@ -8,8 +8,8 @@ namespace CsvHelper.FastDynamicReader
 {
     internal sealed class CsvRecordMetaObject : DynamicMetaObject
     {
-        private static readonly MethodInfo _getValueMethod = typeof(IDictionary<string, object>).GetProperty("Item").GetGetMethod();
-        private static readonly MethodInfo _setValueMethod = typeof(CsvRecord).GetMethod("SetValue", new[] { typeof(string), typeof(object) });
+        private static readonly MethodInfo GetValueMethod = typeof(IDictionary<string, object>).GetProperty("Item").GetGetMethod();
+        private static readonly MethodInfo SetValueMethod = typeof(CsvRecord).GetMethod("SetValue", new[] { typeof(string), typeof(object) });
 
         public CsvRecordMetaObject(Expression expression, BindingRestrictions restrictions, object value)
             : base(expression, restrictions, value)
@@ -33,7 +33,7 @@ namespace CsvHelper.FastDynamicReader
                 Expression.Constant(binder.Name)
             };
 
-            return CallMethod(_getValueMethod, parameters);
+            return CallMethod(GetValueMethod, parameters);
         }
 
         public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder, DynamicMetaObject[] args)
@@ -43,7 +43,7 @@ namespace CsvHelper.FastDynamicReader
                 Expression.Constant(binder.Name)
             };
 
-            return CallMethod(_getValueMethod, parameters);
+            return CallMethod(GetValueMethod, parameters);
         }
 
         public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
@@ -54,7 +54,7 @@ namespace CsvHelper.FastDynamicReader
                 value.Expression,
             };
 
-            return CallMethod(_setValueMethod, parameters);
+            return CallMethod(SetValueMethod, parameters);
         }
 
         public override IEnumerable<string> GetDynamicMemberNames()

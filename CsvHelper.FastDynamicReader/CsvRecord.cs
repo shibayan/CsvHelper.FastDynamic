@@ -12,7 +12,7 @@ namespace CsvHelper.FastDynamicReader
         private readonly CsvHeader _header;
         private object[] _values;
 
-        public CsvRecord(CsvHeader header, object[] values)
+        internal CsvRecord(CsvHeader header, object[] values)
         {
             _header = header ?? throw new ArgumentNullException(nameof(header));
             _values = values ?? throw new ArgumentNullException(nameof(values));
