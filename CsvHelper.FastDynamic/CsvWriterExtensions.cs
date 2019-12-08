@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
 
-namespace CsvHelper.FastDynamicReader
+namespace CsvHelper.FastDynamic
 {
     public static class CsvWriterExtensions
     {
@@ -65,6 +64,8 @@ namespace CsvHelper.FastDynamicReader
                 {
                     csvWriter.WriteField(key);
                 }
+
+                csvWriter.Context.HasHeaderBeenWritten = true;
             }
             else if (record is IDynamicMetaObjectProvider dynamicObject)
             {

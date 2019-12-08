@@ -1,2 +1,2 @@
-# CsvHelper.FastDynamicReader
+# CsvHelper.FastDynamic
  

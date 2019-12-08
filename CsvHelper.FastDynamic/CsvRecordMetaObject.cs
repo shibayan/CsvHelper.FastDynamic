@@ -4,7 +4,7 @@ using System.Dynamic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace CsvHelper.FastDynamicReader
+namespace CsvHelper.FastDynamic
 {
     internal sealed class CsvRecordMetaObject : DynamicMetaObject
     {

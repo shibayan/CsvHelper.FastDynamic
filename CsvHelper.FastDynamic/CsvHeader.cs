@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CsvHelper.FastDynamicReader
+namespace CsvHelper.FastDynamic
 {
     internal sealed class CsvHeader
     {

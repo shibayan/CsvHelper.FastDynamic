@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CsvHelper.FastDynamicReader
+namespace CsvHelper.FastDynamic
 {
     public static class CsvReaderExtensions
     {
@@ -55,6 +55,8 @@ namespace CsvHelper.FastDynamicReader
             }
         }
 
+#if NETSTANDARD2_1
+
         public static async IAsyncEnumerable<dynamic> GetDynamicRecordsAsync(this CsvReader csvReader)
         {
             var context = csvReader.Context;
@@ -103,5 +105,7 @@ namespace CsvHelper.FastDynamicReader
                 yield return record;
             }
         }
+
+#endif
     }
 }
