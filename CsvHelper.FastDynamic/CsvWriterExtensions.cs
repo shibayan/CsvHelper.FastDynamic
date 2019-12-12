@@ -20,15 +20,8 @@ namespace CsvHelper.FastDynamic
                     csvWriter.NextRecord();
                 }
 
-                if (record is IReadOnlyDictionary<string, object> dictionary)
-                {
-                    foreach (var value in dictionary.Values)
-                    {
-                        csvWriter.WriteField(value);
-                    }
-
-                    csvWriter.NextRecord();
-                }
+                csvWriter.WriteFields(record);
+                csvWriter.NextRecord();
             }
         }
 
@@ -44,15 +37,8 @@ namespace CsvHelper.FastDynamic
                     await csvWriter.NextRecordAsync();
                 }
 
-                if (record is IReadOnlyDictionary<string, object> dictionary)
-                {
-                    foreach (var value in dictionary.Values)
-                    {
-                        csvWriter.WriteField(value);
-                    }
-
-                    await csvWriter.NextRecordAsync();
-                }
+                csvWriter.WriteFields(record);
+                await csvWriter.NextRecordAsync();
             }
         }
 
@@ -70,6 +56,24 @@ namespace CsvHelper.FastDynamic
             else if (record is IDynamicMetaObjectProvider dynamicObject)
             {
                 csvWriter.WriteDynamicHeader(dynamicObject);
+            }
+            else
+            {
+                throw new ArgumentException("Not supported element type.");
+            }
+        }
+
+        private static void WriteFields(this CsvWriter csvWriter, object record)
+        {
+            if (record is IReadOnlyDictionary<string, object> dictionary)
+            {
+                foreach (var value in dictionary.Values)
+                {
+                    csvWriter.WriteField(value);
+                }
+            }
+            else if (record is IDynamicMetaObjectProvider dynamicObject)
+            {
             }
             else
             {

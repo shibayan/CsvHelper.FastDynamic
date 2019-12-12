@@ -5,7 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="12.2.1" />
+    <PackageReference Include="CsvHelper" Version="12.2.2" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <Authors>shibayan</Authors>
+    <Company>shibayan</Company>
+    <Description>Fast dynamic reader and writer for CsvHelper</Description>
+    <PackageReleaseNotes>https://github.com/shibayan/CsvHelper.FastDynamic/releases</PackageReleaseNotes>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/shibayan/CsvHelper.FastDynamic</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
 
 </Project>

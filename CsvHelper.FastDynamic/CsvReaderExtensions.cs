@@ -20,9 +20,9 @@ namespace CsvHelper.FastDynamic
                 csvReader.ReadHeader();
             }
 
-            var csvTable = new CsvHeader(context.HeaderRecord
-                                                .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
-                                                .ToArray());
+            var csvHeader = new CsvHeader(context.HeaderRecord
+                                                 .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                                 .ToArray());
 
             while (csvReader.Read())
             {
@@ -37,7 +37,7 @@ namespace CsvHelper.FastDynamic
                         values[i] = csvReader.GetField(i);
                     }
 
-                    record = new CsvRecord(csvTable, values);
+                    record = new CsvRecord(csvHeader, values);
                 }
                 catch (Exception ex)
                 {
@@ -71,9 +71,9 @@ namespace CsvHelper.FastDynamic
                 csvReader.ReadHeader();
             }
 
-            var csvTable = new CsvHeader(context.HeaderRecord
-                                                .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
-                                                .ToArray());
+            var csvHeader = new CsvHeader(context.HeaderRecord
+                                                 .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                                 .ToArray());
 
             while (await csvReader.ReadAsync())
             {
@@ -88,7 +88,7 @@ namespace CsvHelper.FastDynamic
                         values[i] = csvReader.GetField(i);
                     }
 
-                    record = new CsvRecord(csvTable, values);
+                    record = new CsvRecord(csvHeader, values);
                 }
                 catch (Exception ex)
                 {
