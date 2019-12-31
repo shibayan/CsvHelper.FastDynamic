@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CsvHelper.FastDynamic
@@ -46,9 +47,16 @@ namespace CsvHelper.FastDynamic
         {
             if (record is IReadOnlyDictionary<string, object> dictionary)
             {
-                foreach (var key in dictionary.Keys)
+                var fieldNames = dictionary.Keys;
+
+                if (csvWriter.Configuration.DynamicPropertySort != null)
                 {
-                    csvWriter.WriteField(key);
+                    fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
+                }
+
+                foreach (var fieldName in fieldNames)
+                {
+                    csvWriter.WriteField(fieldName);
                 }
 
                 csvWriter.Context.HasHeaderBeenWritten = true;
@@ -67,13 +75,21 @@ namespace CsvHelper.FastDynamic
         {
             if (record is IReadOnlyDictionary<string, object> dictionary)
             {
-                foreach (var value in dictionary.Values)
+                var fieldNames = dictionary.Keys;
+
+                if (csvWriter.Configuration.DynamicPropertySort != null)
                 {
-                    csvWriter.WriteField(value);
+                    fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
+                }
+
+                foreach (var fieldName in fieldNames)
+                {
+                    csvWriter.WriteField(dictionary[fieldName]);
                 }
             }
-            else if (record is IDynamicMetaObjectProvider dynamicObject)
+            else if (record is IDynamicMetaObjectProvider)
             {
+                csvWriter.WriteRecord(record);
             }
             else
             {
