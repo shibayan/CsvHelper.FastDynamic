@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace Example
     {
         static async Task Main(string[] args)
         {
-            using var csvReader = new CsvReader(new StreamReader(@"sample.csv"));
+            using var csvReader = new CsvReader(new StreamReader("sample.csv"), CultureInfo.InvariantCulture);
 
             var records = csvReader.GetDynamicRecordsAsync();
 
