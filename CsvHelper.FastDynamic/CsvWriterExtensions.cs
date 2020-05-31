@@ -25,6 +25,8 @@ namespace CsvHelper.FastDynamic
             }
         }
 
+#if NETSTANDARD2_1
+
         public static async Task WriteDynamicRecordsAsync(this CsvWriter csvWriter, IAsyncEnumerable<object> records)
         {
             var context = csvWriter.Context;
@@ -41,6 +43,8 @@ namespace CsvHelper.FastDynamic
                 await csvWriter.NextRecordAsync().ConfigureAwait(false);
             }
         }
+
+#endif
 
         private static void WriteHeader(this CsvWriter csvWriter, object record)
         {
