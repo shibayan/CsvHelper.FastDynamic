@@ -51,7 +51,7 @@ namespace CsvHelper.FastDynamic
             var parameters = new Expression[]
             {
                 Expression.Constant(binder.Name),
-                value.Expression,
+                value.Expression
             };
 
             return CallMethod(SetValueMethod, parameters);

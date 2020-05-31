@@ -28,9 +28,7 @@ namespace CsvHelper.FastDynamic
         }
 
         public int IndexOfName(string name)
-        {
-            return name != null && _fieldNameLookup.TryGetValue(name, out var result) ? result : -1;
-        }
+            => name != null && _fieldNameLookup.TryGetValue(name, out var index) ? index : -1;
 
         public int AddField(string name)
         {

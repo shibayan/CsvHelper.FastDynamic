@@ -41,21 +41,14 @@ namespace CsvHelper.FastDynamic
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
         #region ICollection<KeyValuePair<string, object>>
 
         void ICollection<KeyValuePair<string, object>>.Add(KeyValuePair<string, object> item)
-        {
-            IDictionary<string, object> dic = this;
-
-            dic.Add(item.Key, item.Value);
-        }
+            => ((IDictionary<string, object>)this).Add(item.Key, item.Value);
 
         void ICollection<KeyValuePair<string, object>>.Clear()
         {
@@ -66,9 +59,7 @@ namespace CsvHelper.FastDynamic
         }
 
         bool ICollection<KeyValuePair<string, object>>.Contains(KeyValuePair<string, object> item)
-        {
-            return TryGetValue(item.Key, out var value) && Equals(value, item.Value);
-        }
+            => TryGetValue(item.Key, out var value) && Equals(value, item.Value);
 
         void ICollection<KeyValuePair<string, object>>.CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
@@ -79,11 +70,7 @@ namespace CsvHelper.FastDynamic
         }
 
         bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item)
-        {
-            IDictionary<string, object> dic = this;
-
-            return dic.Remove(item.Key);
-        }
+            => ((IDictionary<string, object>)this).Remove(item.Key);
 
         int ICollection<KeyValuePair<string, object>>.Count => _values.Count(t => !(t is DeadValue));
 
@@ -93,32 +80,17 @@ namespace CsvHelper.FastDynamic
 
         #region IDictionary<string, object>
 
-        void IDictionary<string, object>.Add(string key, object value)
-        {
-            SetValue(key, value, true);
-        }
+        void IDictionary<string, object>.Add(string key, object value) => SetValue(key, value, true);
 
-        bool IDictionary<string, object>.ContainsKey(string key)
-        {
-            return ContainsKey(key);
-        }
+        bool IDictionary<string, object>.ContainsKey(string key) => ContainsKey(key);
 
         bool IDictionary<string, object>.Remove(string key) => Remove(_header.IndexOfName(key));
 
-        bool IDictionary<string, object>.TryGetValue(string key, out object value)
-        {
-            return TryGetValue(key, out value);
-        }
+        bool IDictionary<string, object>.TryGetValue(string key, out object value) => TryGetValue(key, out value);
 
         object IDictionary<string, object>.this[string key]
         {
-            get
-            {
-                TryGetValue(key, out var value);
-
-                return value;
-            }
-
+            get => TryGetValue(key, out var value) ? value : null;
             set => SetValue(key, value, false);
         }
 
@@ -130,27 +102,16 @@ namespace CsvHelper.FastDynamic
 
         #region IReadOnlyDictionary<string, object>
 
-        bool IReadOnlyDictionary<string, object>.ContainsKey(string key)
-        {
-            return ContainsKey(key);
-        }
+        bool IReadOnlyDictionary<string, object>.ContainsKey(string key) => ContainsKey(key);
 
         int IReadOnlyCollection<KeyValuePair<string, object>>.Count => _values.Count(x => !(x is DeadValue));
 
         object IReadOnlyDictionary<string, object>.this[string key]
         {
-            get
-            {
-                TryGetValue(key, out var value);
-
-                return value;
-            }
+            get => TryGetValue(key, out var value) ? value : null;
         }
 
-        bool IReadOnlyDictionary<string, object>.TryGetValue(string key, out object value)
-        {
-            return TryGetValue(key, out value);
-        }
+        bool IReadOnlyDictionary<string, object>.TryGetValue(string key, out object value) => TryGetValue(key, out value);
 
         IEnumerable<string> IReadOnlyDictionary<string, object>.Keys => this.Select(x => x.Key);
 
@@ -161,9 +122,7 @@ namespace CsvHelper.FastDynamic
         #region IDynamicMetaObjectProvider
 
         public DynamicMetaObject GetMetaObject(Expression parameter)
-        {
-            return new CsvRecordMetaObject(parameter, BindingRestrictions.Empty, this);
-        }
+            => new CsvRecordMetaObject(parameter, BindingRestrictions.Empty, this);
 
         #endregion
 
