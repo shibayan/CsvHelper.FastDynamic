@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 
 namespace CsvHelper.FastDynamic
 {
+    // From https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperRow.cs
     internal sealed class CsvRecord : IDictionary<string, object>, IReadOnlyDictionary<string, object>, IDynamicMetaObjectProvider
     {
         private readonly CsvHeader _header;

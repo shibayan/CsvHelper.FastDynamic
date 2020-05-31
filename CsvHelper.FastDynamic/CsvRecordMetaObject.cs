@@ -6,10 +6,11 @@ using System.Reflection;
 
 namespace CsvHelper.FastDynamic
 {
+    // From https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperRowMetaObject.cs
     internal sealed class CsvRecordMetaObject : DynamicMetaObject
     {
         private static readonly MethodInfo GetValueMethod = typeof(IDictionary<string, object>).GetProperty("Item").GetGetMethod();
-        private static readonly MethodInfo SetValueMethod = typeof(CsvRecord).GetMethod("SetValue", new[] { typeof(string), typeof(object) });
+        private static readonly MethodInfo SetValueMethod = typeof(CsvRecord).GetMethod(nameof(CsvRecord.SetValue), new[] { typeof(string), typeof(object) });
 
         public CsvRecordMetaObject(Expression expression, BindingRestrictions restrictions, object value)
             : base(expression, restrictions, value)
