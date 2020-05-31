@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace CsvHelper.FastDynamic
 {
     public static class CsvWriterExtensions
     {
-        public static void WriteDynamicRecords(this CsvWriter csvWriter, IEnumerable records)
+        public static void WriteDynamicRecords(this CsvWriter csvWriter, IEnumerable<object> records)
         {
             var context = csvWriter.Context;
 
@@ -26,20 +25,20 @@ namespace CsvHelper.FastDynamic
             }
         }
 
-        public static async Task WriteDynamicRecordsAsync(this CsvWriter csvWriter, IEnumerable records)
+        public static async Task WriteDynamicRecordsAsync(this CsvWriter csvWriter, IAsyncEnumerable<object> records)
         {
             var context = csvWriter.Context;
 
-            foreach (var record in records)
+            await foreach (var record in records.ConfigureAwait(false))
             {
                 if (!context.HasHeaderBeenWritten && context.WriterConfiguration.HasHeaderRecord)
                 {
                     csvWriter.WriteHeader(record);
-                    await csvWriter.NextRecordAsync();
+                    await csvWriter.NextRecordAsync().ConfigureAwait(false);
                 }
 
                 csvWriter.WriteFields(record);
-                await csvWriter.NextRecordAsync();
+                await csvWriter.NextRecordAsync().ConfigureAwait(false);
             }
         }
 

@@ -63,7 +63,7 @@ namespace CsvHelper.FastDynamic
 
             if (context.ReaderConfiguration.HasHeaderRecord && context.HeaderRecord == null)
             {
-                if (!await csvReader.ReadAsync())
+                if (!await csvReader.ReadAsync().ConfigureAwait(false))
                 {
                     yield break;
                 }
@@ -75,7 +75,7 @@ namespace CsvHelper.FastDynamic
                                                  .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
                                                  .ToArray());
 
-            while (await csvReader.ReadAsync())
+            while (await csvReader.ReadAsync().ConfigureAwait(false))
             {
                 CsvRecord record;
 
