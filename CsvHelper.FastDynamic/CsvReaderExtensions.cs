@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CsvHelper.FastDynamic
 {
     public static class CsvReaderExtensions
     {
-        public static IEnumerable<dynamic> GetDynamicRecords(this CsvReader csvReader)
+        public static IReadOnlyList<dynamic> GetDynamicRecords(this CsvReader csvReader)
+            => csvReader.EnumerateDynamicRecords().ToArray();
+
+        public static IEnumerable<dynamic> EnumerateDynamicRecords(this CsvReader csvReader)
         {
             var context = csvReader.Context;
 
@@ -57,7 +61,19 @@ namespace CsvHelper.FastDynamic
 
 #if NETSTANDARD2_1
 
-        public static async IAsyncEnumerable<dynamic> GetDynamicRecordsAsync(this CsvReader csvReader)
+        public static async Task<IReadOnlyList<dynamic>> GetDynamicRecordsAsync(this CsvReader csvReader)
+        {
+            var records = new List<dynamic>();
+
+            await foreach (var record in csvReader.EnumerateDynamicRecordsAsync())
+            {
+                records.Add(record);
+            }
+
+            return records;
+        }
+
+        public static async IAsyncEnumerable<dynamic> EnumerateDynamicRecordsAsync(this CsvReader csvReader)
         {
             var context = csvReader.Context;
 
