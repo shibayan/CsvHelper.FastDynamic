@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace CsvHelper.FastDynamic
 {
-    // From https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperRowMetaObject.cs
+    // Thanks, from https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperRowMetaObject.cs
     internal sealed class CsvRecordMetaObject : DynamicMetaObject
     {
         private static readonly MethodInfo GetValueMethod = typeof(IDictionary<string, object>).GetProperty("Item").GetGetMethod();

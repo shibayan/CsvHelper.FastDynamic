@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,12 +15,29 @@ namespace CsvHelper.FastDynamic
             {
                 if (!context.HasHeaderBeenWritten && context.WriterConfiguration.HasHeaderRecord)
                 {
-                    csvWriter.WriteHeader(record);
+                    csvWriter.WriteHeaderInternal(record);
                     csvWriter.NextRecord();
                 }
 
-                csvWriter.WriteFields(record);
+                csvWriter.WriteRecordInternal(record);
                 csvWriter.NextRecord();
+            }
+        }
+
+        public static async Task WriteDynamicRecordsAsync(this CsvWriter csvWriter, IEnumerable<object> records)
+        {
+            var context = csvWriter.Context;
+
+            foreach (var record in records)
+            {
+                if (!context.HasHeaderBeenWritten && context.WriterConfiguration.HasHeaderRecord)
+                {
+                    csvWriter.WriteHeaderInternal(record);
+                    await csvWriter.NextRecordAsync().ConfigureAwait(false);
+                }
+
+                csvWriter.WriteRecordInternal(record);
+                await csvWriter.NextRecordAsync().ConfigureAwait(false);
             }
         }
 
@@ -35,18 +51,18 @@ namespace CsvHelper.FastDynamic
             {
                 if (!context.HasHeaderBeenWritten && context.WriterConfiguration.HasHeaderRecord)
                 {
-                    csvWriter.WriteHeader(record);
+                    csvWriter.WriteHeaderInternal(record);
                     await csvWriter.NextRecordAsync().ConfigureAwait(false);
                 }
 
-                csvWriter.WriteFields(record);
+                csvWriter.WriteRecordInternal(record);
                 await csvWriter.NextRecordAsync().ConfigureAwait(false);
             }
         }
 
 #endif
 
-        private static void WriteHeader(this CsvWriter csvWriter, object record)
+        private static void WriteHeaderInternal(this CsvWriter csvWriter, object record)
         {
             if (record is IReadOnlyDictionary<string, object> dictionary)
             {
@@ -70,11 +86,11 @@ namespace CsvHelper.FastDynamic
             }
             else
             {
-                throw new ArgumentException("Not supported element type.");
+                csvWriter.WriteHeader(record.GetType());
             }
         }
 
-        private static void WriteFields(this CsvWriter csvWriter, object record)
+        private static void WriteRecordInternal(this CsvWriter csvWriter, object record)
         {
             if (record is IReadOnlyDictionary<string, object> dictionary)
             {
@@ -96,7 +112,7 @@ namespace CsvHelper.FastDynamic
             }
             else
             {
-                throw new ArgumentException("Not supported element type.");
+                csvWriter.WriteRecord(record);
             }
         }
     }
