@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvHelper.FastDynamic", "CsvHelper.FastDynamic\CsvHelper.FastDynamic.csproj", "{74E0328A-075D-4C34-B412-B3136C5E4780}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{65A01851-5F8F-485B-879D-F9535443C3A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvHelper.FastDynamic.Tests", "CsvHelper.FastDynamic.Tests\CsvHelper.FastDynamic.Tests.csproj", "{BA294442-D681-4CC3-BF1B-849632D68D1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{74E0328A-075D-4C34-B412-B3136C5E4780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74E0328A-075D-4C34-B412-B3136C5E4780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74E0328A-075D-4C34-B412-B3136C5E4780}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65A01851-5F8F-485B-879D-F9535443C3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A01851-5F8F-485B-879D-F9535443C3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65A01851-5F8F-485B-879D-F9535443C3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65A01851-5F8F-485B-879D-F9535443C3A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA294442-D681-4CC3-BF1B-849632D68D1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA294442-D681-4CC3-BF1B-849632D68D1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA294442-D681-4CC3-BF1B-849632D68D1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA294442-D681-4CC3-BF1B-849632D68D1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

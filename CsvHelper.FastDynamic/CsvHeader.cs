@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CsvHelper.FastDynamic
 {
-    // From https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperTable.cs
+    // Thanks, from https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperTable.cs
     internal sealed class CsvHeader
     {
         private string[] _fieldNames;
