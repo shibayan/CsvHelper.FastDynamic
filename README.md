@@ -42,7 +42,7 @@ class Program
 }
 ```
 
-### Async CSV Reader (.NET Standard 2.1 / C# 8.0)
+### Async CSV Enumerate (.NET Standard 2.1 / C# 8.0)
 
 ```csharp
 class Program
@@ -51,7 +51,7 @@ class Program
     {
         using var csvReader = new CsvReader(new StreamReader("sample.csv"), CultureInfo.InvariantCulture);
 
-        var records = csvReader.GetDynamicRecordsAsync();
+        var records = csvReader.EnumerateDynamicRecordsAsync();
 
         await foreach (var record in records)
         {

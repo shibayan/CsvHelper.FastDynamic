@@ -16,6 +16,42 @@ namespace CsvHelper.FastDynamic.Tests
 
             var records = csvReader.GetDynamicRecords();
 
+            Assert.NotNull(records);
+            Assert.Equal(3, records.Count);
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
+                Assert.Equal(TestData.CsvRecords[i]["Location"], records[i].Location);
+            }
+        }
+
+        [Fact]
+        public async Task ReadDynamicRecordsAsync()
+        {
+            var csvReader = CreateInMemoryReader();
+
+            var records = await csvReader.GetDynamicRecordsAsync();
+
+            Assert.NotNull(records);
+            Assert.Equal(3, records.Count);
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
+                Assert.Equal(TestData.CsvRecords[i]["Location"], records[i].Location);
+            }
+        }
+
+        [Fact]
+        public void EnumerateDynamicRecords()
+        {
+            var csvReader = CreateInMemoryReader();
+
+            var records = csvReader.EnumerateDynamicRecords();
+
             int count = 0;
 
             foreach (var record in records)
@@ -34,11 +70,11 @@ namespace CsvHelper.FastDynamic.Tests
         }
 
         [Fact]
-        public async Task ReadDynamicRecordsAsync()
+        public async Task EnumerateDynamicRecordsAsync()
         {
             var csvReader = CreateInMemoryReader();
 
-            var records = csvReader.GetDynamicRecordsAsync();
+            var records = csvReader.EnumerateDynamicRecordsAsync();
 
             int count = 0;
 
