@@ -23,9 +23,9 @@ namespace CsvHelper.FastDynamic.Tests
                 Assert.NotNull(record);
                 Assert.IsAssignableFrom<IDictionary<string, object>>(record);
 
-                Assert.Equal(TestCsvRecords[count]["Id"], record.Id);
-                Assert.Equal(TestCsvRecords[count]["Name"], record.Name);
-                Assert.Equal(TestCsvRecords[count]["Location"], record.Location);
+                Assert.Equal(TestData.CsvRecords[count]["Id"], record.Id);
+                Assert.Equal(TestData.CsvRecords[count]["Name"], record.Name);
+                Assert.Equal(TestData.CsvRecords[count]["Location"], record.Location);
 
                 count += 1;
             }
@@ -47,9 +47,9 @@ namespace CsvHelper.FastDynamic.Tests
                 Assert.NotNull(record);
                 Assert.IsAssignableFrom<IDictionary<string, object>>(record);
 
-                Assert.Equal(TestCsvRecords[count]["Id"], record.Id);
-                Assert.Equal(TestCsvRecords[count]["Name"], record.Name);
-                Assert.Equal(TestCsvRecords[count]["Location"], record.Location);
+                Assert.Equal(TestData.CsvRecords[count]["Id"], record.Id);
+                Assert.Equal(TestData.CsvRecords[count]["Name"], record.Name);
+                Assert.Equal(TestData.CsvRecords[count]["Location"], record.Location);
 
                 count += 1;
             }
@@ -59,20 +59,7 @@ namespace CsvHelper.FastDynamic.Tests
 
         private CsvReader CreateInMemoryReader()
         {
-            return new CsvReader(new StringReader(TestCsvContent), CultureInfo.InvariantCulture);
+            return new CsvReader(new StringReader(TestData.CsvContent), CultureInfo.InvariantCulture);
         }
-
-        private const string TestCsvContent = @"Id,Name,Location
-1,kazuakix,Wakayama
-2,daruyanagi,Ehime
-3,buchizo,Osaka
-";
-
-        private static readonly IReadOnlyList<IDictionary<string, string>> TestCsvRecords = new[]
-        {
-            new Dictionary<string, string> { { "Id", "1" }, { "Name", "kazuakix" }, { "Location", "Wakayama" } },
-            new Dictionary<string, string> { { "Id", "2" }, { "Name", "daruyanagi" }, { "Location", "Ehime" } },
-            new Dictionary<string, string> { { "Id", "3" }, { "Name", "buchizo" }, { "Location", "Osaka" } }
-        };
     }
 }
