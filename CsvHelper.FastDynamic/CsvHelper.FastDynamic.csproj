@@ -11,7 +11,7 @@
   <PropertyGroup>
     <Authors>shibayan</Authors>
     <Company>shibayan</Company>
-    <Description>Fast dynamic reader and writer for CsvHelper</Description>
+    <Description>Fast dynamic records reader and writer extensions for CsvHelper</Description>
     <PackageReleaseNotes>https://github.com/shibayan/CsvHelper.FastDynamic/releases</PackageReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/shibayan/CsvHelper.FastDynamic</RepositoryUrl>
