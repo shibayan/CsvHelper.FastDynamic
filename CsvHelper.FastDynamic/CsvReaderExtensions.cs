@@ -36,10 +36,7 @@ namespace CsvHelper.FastDynamic
                 {
                     var values = new object[context.HeaderRecord.Length];
 
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        values[i] = csvReader.GetField(i);
-                    }
+                    Array.Copy(context.Record, values, values.Length);
 
                     record = new CsvRecord(csvHeader, values);
                 }
@@ -99,10 +96,7 @@ namespace CsvHelper.FastDynamic
                 {
                     var values = new object[context.HeaderRecord.Length];
 
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        values[i] = csvReader.GetField(i);
-                    }
+                    Array.Copy(context.Record, values, values.Length);
 
                     record = new CsvRecord(csvHeader, values);
                 }
