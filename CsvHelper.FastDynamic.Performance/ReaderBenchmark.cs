@@ -34,7 +34,7 @@ namespace CsvHelper.FastDynamic.Performance
         {
             using var csvReader = new CsvReader(new StringReader(_sampleCsvData), CultureInfo.InvariantCulture);
 
-            return csvReader.GetDictionaryRecords().ToArray();
+            return csvReader.GetDictionaryRecords();
         }
 
         [Benchmark]

@@ -9,6 +9,8 @@ namespace CsvHelper.FastDynamic
     // Thanks, from https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperRowMetaObject.cs
     internal sealed class CsvRecordMetaObject : DynamicMetaObject
     {
+        private static readonly string[] EmptyArray = Array.Empty<string>();
+
         private static readonly MethodInfo GetValueMethod = typeof(IDictionary<string, object>).GetProperty("Item").GetGetMethod();
         private static readonly MethodInfo SetValueMethod = typeof(CsvRecord).GetMethod(nameof(CsvRecord.SetValue), new[] { typeof(string), typeof(object) });
 
@@ -60,7 +62,7 @@ namespace CsvHelper.FastDynamic
 
         public override IEnumerable<string> GetDynamicMemberNames()
         {
-            return HasValue && Value is IDictionary<string, object> lookup ? lookup.Keys : Array.Empty<string>();
+            return HasValue && Value is IDictionary<string, object> lookup ? lookup.Keys : EmptyArray;
         }
     }
 }

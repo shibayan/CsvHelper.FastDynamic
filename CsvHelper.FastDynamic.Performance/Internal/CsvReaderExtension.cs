@@ -5,7 +5,7 @@ namespace CsvHelper.FastDynamic.Performance.Internal
 {
     internal static class CsvReaderExtension
     {
-        internal static IList<IDictionary<string, object>> GetDictionaryRecords(this CsvReader csvReader)
+        internal static IReadOnlyList<IDictionary<string, object>> GetDictionaryRecords(this CsvReader csvReader)
         {
             // Read Header
             csvReader.Read();

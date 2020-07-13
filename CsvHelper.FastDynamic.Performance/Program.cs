@@ -7,6 +7,7 @@ namespace CsvHelper.FastDynamic.Performance
         static void Main(string[] args)
         {
             BenchmarkRunner.Run<ReaderBenchmark>();
+            BenchmarkRunner.Run<WriterBenchmark>();
         }
     }
 }
