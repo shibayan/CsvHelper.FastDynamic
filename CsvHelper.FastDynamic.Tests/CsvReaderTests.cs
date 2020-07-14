@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -91,6 +92,30 @@ namespace CsvHelper.FastDynamic.Tests
             }
 
             Assert.Equal(3, count);
+        }
+
+        [Fact]
+        public void AddDynamicColumns()
+        {
+            var csvReader = CreateInMemoryReader();
+
+            var records = csvReader.GetDynamicRecords()
+                                   .Cast<IDictionary<string, object>>()
+                                   .ToArray();
+
+            for (int i = 0; i < 3; i++)
+            {
+                records[i]["Append"] = $"test-{i}";
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+                Assert.Equal(TestData.CsvRecords[i]["Location"], records[i]["Location"]);
+
+                Assert.Equal($"test-{i}", records[i]["Append"]);
+            }
         }
 
         private CsvReader CreateInMemoryReader()
