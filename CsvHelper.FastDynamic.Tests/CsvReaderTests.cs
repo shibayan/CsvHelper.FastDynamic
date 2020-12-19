@@ -11,7 +11,7 @@ namespace CsvHelper.FastDynamic.Tests
     public class CsvReaderTests
     {
         [Fact]
-        public void ReadDynamicRecords()
+        public void ReadDynamicRecords_Member()
         {
             var csvReader = CreateInMemoryReader();
 
@@ -25,6 +25,44 @@ namespace CsvHelper.FastDynamic.Tests
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
                 Assert.Equal(TestData.CsvRecords[i]["Location"], records[i].Location);
+            }
+        }
+
+        [Fact]
+        public void ReadDynamicRecords_Indexer()
+        {
+            var csvReader = CreateInMemoryReader();
+
+            var records = csvReader.GetDynamicRecords();
+
+            Assert.NotNull(records);
+            Assert.Equal(3, records.Count);
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+                Assert.Equal(TestData.CsvRecords[i]["Location"], records[i]["Location"]);
+            }
+        }
+
+        [Fact]
+        public void ReadDynamicRecords_Dictionary()
+        {
+            var csvReader = CreateInMemoryReader();
+
+            var records = csvReader.GetDynamicRecords()
+                                   .Cast<IDictionary<string, object>>()
+                                   .ToArray();
+
+            Assert.NotNull(records);
+            Assert.Equal(3, records.Length);
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+                Assert.Equal(TestData.CsvRecords[i]["Location"], records[i]["Location"]);
             }
         }
 
@@ -95,7 +133,51 @@ namespace CsvHelper.FastDynamic.Tests
         }
 
         [Fact]
-        public void AddDynamicColumns()
+        public void AddDynamicColumns_Member()
+        {
+            var csvReader = CreateInMemoryReader();
+
+            var records = csvReader.GetDynamicRecords();
+
+            for (int i = 0; i < 3; i++)
+            {
+                records[i].Append = $"test-{i}";
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
+                Assert.Equal(TestData.CsvRecords[i]["Location"], records[i].Location);
+
+                Assert.Equal($"test-{i}", records[i].Append);
+            }
+        }
+
+        [Fact]
+        public void AddDynamicColumns_Indexer()
+        {
+            var csvReader = CreateInMemoryReader();
+
+            var records = csvReader.GetDynamicRecords();
+
+            for (int i = 0; i < 3; i++)
+            {
+                records[i]["Append"] = $"test-{i}";
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+                Assert.Equal(TestData.CsvRecords[i]["Location"], records[i]["Location"]);
+
+                Assert.Equal($"test-{i}", records[i]["Append"]);
+            }
+        }
+
+        [Fact]
+        public void AddDynamicColumns_Dictionary()
         {
             var csvReader = CreateInMemoryReader();
 

@@ -159,22 +159,27 @@ namespace CsvHelper.FastDynamic
             return true;
         }
 
-        internal object SetValue(string name, object value, bool isAdd)
+        public object SetValue(string key, object value)
         {
-            if (name == null)
+            return SetValue(key, value, false);
+        }
+
+        internal object SetValue(string key, object value, bool isAdd)
+        {
+            if (key == null)
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentNullException(nameof(key));
             }
 
-            int index = _header.IndexOfName(name);
+            int index = _header.IndexOfName(key);
 
             if (index < 0)
             {
-                index = _header.AddField(name);
+                index = _header.AddField(key);
             }
             else if (isAdd && index < _values.Length && !(_values[index] is DeadValue))
             {
-                throw new ArgumentException("An item with the same name has already been added", nameof(name));
+                throw new ArgumentException("An item with the same name has already been added", nameof(key));
             }
 
             return SetValue(index, value);
