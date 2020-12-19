@@ -19,14 +19,14 @@ namespace CsvHelper.FastDynamic
         {
         }
 
-        private DynamicMetaObject CallMethod(MethodInfo method, Expression[] parameters)
+        public override DynamicMetaObject BindGetIndex(GetIndexBinder binder, DynamicMetaObject[] indexes)
         {
-            var callMethod = new DynamicMetaObject(
-                Expression.Call(Expression.Convert(Expression, LimitType), method, parameters),
-                BindingRestrictions.GetTypeRestriction(Expression, LimitType)
-            );
+            var parameters = new Expression[]
+            {
+                indexes[0].Expression
+            };
 
-            return callMethod;
+            return CallMethod(GetValueMethod, parameters);
         }
 
         public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
@@ -49,6 +49,17 @@ namespace CsvHelper.FastDynamic
             return CallMethod(GetValueMethod, parameters);
         }
 
+        public override DynamicMetaObject BindSetIndex(SetIndexBinder binder, DynamicMetaObject[] indexes, DynamicMetaObject value)
+        {
+            var parameters = new Expression[]
+            {
+                indexes[0].Expression,
+                value.Expression
+            };
+
+            return CallMethod(SetValueMethod, parameters);
+        }
+
         public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
         {
             var parameters = new Expression[]
@@ -63,6 +74,16 @@ namespace CsvHelper.FastDynamic
         public override IEnumerable<string> GetDynamicMemberNames()
         {
             return HasValue && Value is IDictionary<string, object> lookup ? lookup.Keys : EmptyArray;
+        }
+
+        private DynamicMetaObject CallMethod(MethodInfo method, Expression[] parameters)
+        {
+            var callMethod = new DynamicMetaObject(
+                Expression.Call(Expression.Convert(Expression, LimitType), method, parameters),
+                BindingRestrictions.GetTypeRestriction(Expression, LimitType)
+            );
+
+            return callMethod;
         }
     }
 }
