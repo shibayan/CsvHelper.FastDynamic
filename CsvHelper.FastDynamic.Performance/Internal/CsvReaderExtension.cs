@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CsvHelper.FastDynamic.Performance.Internal
@@ -6,31 +7,51 @@ namespace CsvHelper.FastDynamic.Performance.Internal
     internal static class CsvReaderExtension
     {
         internal static IReadOnlyList<IDictionary<string, object>> GetDictionaryRecords(this CsvReader csvReader)
-        {
-            // Read Header
-            csvReader.Read();
-            csvReader.ReadHeader();
+            => csvReader.EnumerateDictionaryRecords().ToArray();
 
-            var headerRecord = csvReader.Context
-                                        .HeaderRecord
+        internal static IEnumerable<IDictionary<string, object>> EnumerateDictionaryRecords(this CsvReader csvReader)
+        {
+            if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord == null)
+            {
+                if (!csvReader.Read())
+                {
+                    yield break;
+                }
+
+                csvReader.ReadHeader();
+            }
+
+            var headerRecord = csvReader.HeaderRecord
                                         .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
                                         .ToArray();
 
-            var result = new List<IDictionary<string, object>>();
-
             while (csvReader.Read())
             {
-                var record = new Dictionary<string, object>(headerRecord.Length);
+                Dictionary<string, object> record;
 
-                for (int i = 0; i < headerRecord.Length; i++)
+                try
                 {
-                    record[headerRecord[i]] = csvReader[i];
+                    record = new Dictionary<string, object>(headerRecord.Length);
+
+                    for (int i = 0; i < headerRecord.Length; i++)
+                    {
+                        record[headerRecord[i]] = csvReader.Parser[i];
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
+
+                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
+                    {
+                        throw readerException;
+                    }
+
+                    continue;
                 }
 
-                result.Add(record);
+                yield return record;
             }
-
-            return result;
         }
     }
 }
