@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CsvHelper.FastDynamic.Tests
 {
     public static class TestData
     {
-        public static readonly string CsvContent = "Id,Name,Location\r\n1,kazuakix,Wakayama\r\n2,daruyanagi,Ehime\r\n3,buchizo,Osaka\r\n";
+        public static readonly string CsvContent = $"Id,Name,Location{Environment.NewLine}1,kazuakix,Wakayama{Environment.NewLine}2,daruyanagi,Ehime{Environment.NewLine}3,buchizo,Osaka{Environment.NewLine}";
 
         public static readonly IReadOnlyList<IDictionary<string, string>> CsvRecords = new[]
         {
