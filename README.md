@@ -66,34 +66,34 @@ class Program
 ### Reader
 
 ```
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19041.329 (2004/?/20H1)
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19042
 Intel Core i9-10940X CPU 3.30GHz, 1 CPU, 28 logical and 14 physical cores
-.NET Core SDK=3.1.301
-  [Host]     : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
+.NET Core SDK=5.0.102
+  [Host]     : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
+  DefaultJob : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
 
 
 |               Method |       Mean |    Error |   StdDev |   Gen 0 |   Gen 1 | Gen 2 | Allocated |
 |--------------------- |-----------:|---------:|---------:|--------:|--------:|------:|----------:|
-|           GetRecords | 1,687.1 us | 17.11 us | 15.17 us | 83.9844 | 41.0156 |     - | 829.18 KB |
-| GetDictionaryRecords |   776.7 us | 14.59 us | 16.21 us | 73.2422 | 34.1797 |     - | 725.63 KB |
-|    GetDynamicRecords |   617.3 us | 11.23 us |  9.96 us | 61.5234 |  2.9297 |     - | 608.87 KB |
+|           GetRecords | 1,350.7 us | 26.83 us | 38.48 us | 78.1250 | 39.0625 |     - | 785.81 KB |
+| GetDictionaryRecords |   419.0 us |  8.24 us | 11.81 us | 53.2227 | 20.0195 |     - |  526.7 KB |
+|    GetDynamicRecords |   331.0 us |  6.59 us | 10.45 us | 41.5039 |  7.3242 |     - | 408.92 KB |
 ```
 
 ### Writer
 
 ```
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19041.329 (2004/?/20H1)
+BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19042
 Intel Core i9-10940X CPU 3.30GHz, 1 CPU, 28 logical and 14 physical cores
-.NET Core SDK=3.1.301
-  [Host]     : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
-  DefaultJob : .NET Core 3.1.5 (CoreCLR 4.700.20.26901, CoreFX 4.700.20.27001), X64 RyuJIT
+.NET Core SDK=5.0.102
+  [Host]     : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
+  DefaultJob : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
 
 
-|              Method |       Mean |    Error |   StdDev |    Gen 0 |   Gen 1 | Gen 2 |  Allocated |
-|-------------------- |-----------:|---------:|---------:|---------:|--------:|------:|-----------:|
-|        WriteRecords | 2,355.6 us | 46.86 us | 64.14 us | 148.4375 | 27.3438 |     - | 1476.46 KB |
-| WriteDynamicRecords |   885.7 us | 17.50 us | 16.37 us |  17.5781 |  2.9297 |     - |  174.49 KB |
+|              Method |       Mean |    Error |    StdDev |    Gen 0 |   Gen 1 | Gen 2 |  Allocated |
+|-------------------- |-----------:|---------:|----------:|---------:|--------:|------:|-----------:|
+|        WriteRecords | 4,104.7 us | 81.42 us | 142.60 us | 359.3750 | 70.3125 |     - | 3532.62 KB |
+| WriteDynamicRecords |   714.8 us | 14.16 us |  25.17 us |  12.6953 |  1.9531 |     - |  132.48 KB |
 ```
 
 ## Thanks

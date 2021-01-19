@@ -12,9 +12,7 @@ namespace CsvHelper.FastDynamic
 
         public static IEnumerable<dynamic> EnumerateDynamicRecords(this CsvReader csvReader)
         {
-            var context = csvReader.Context;
-
-            if (context.ReaderConfiguration.HasHeaderRecord && context.HeaderRecord == null)
+            if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord == null)
             {
                 if (!csvReader.Read())
                 {
@@ -24,9 +22,9 @@ namespace CsvHelper.FastDynamic
                 csvReader.ReadHeader();
             }
 
-            var csvHeader = new CsvHeader(context.HeaderRecord
-                                                 .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
-                                                 .ToArray());
+            var csvHeader = new CsvHeader(csvReader.HeaderRecord
+                                                   .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                                   .ToArray());
 
             while (csvReader.Read())
             {
@@ -34,17 +32,20 @@ namespace CsvHelper.FastDynamic
 
                 try
                 {
-                    var values = new object[context.HeaderRecord.Length];
+                    var values = new object[csvReader.HeaderRecord.Length];
 
-                    Array.Copy(context.Record, values, context.Record.Length);
+                    for (int i = 0; i < csvReader.HeaderRecord.Length; i++)
+                    {
+                        values[i] = csvReader.Parser[i];
+                    }
 
                     record = new CsvRecord(csvHeader, values);
                 }
                 catch (Exception ex)
                 {
-                    var readerException = new ReaderException(context, "An unexpected error occurred.", ex);
+                    var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
 
-                    if (context.ReaderConfiguration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
+                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
                     {
                         throw readerException;
                     }
@@ -72,9 +73,7 @@ namespace CsvHelper.FastDynamic
 
         public static async IAsyncEnumerable<dynamic> EnumerateDynamicRecordsAsync(this CsvReader csvReader)
         {
-            var context = csvReader.Context;
-
-            if (context.ReaderConfiguration.HasHeaderRecord && context.HeaderRecord == null)
+            if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord == null)
             {
                 if (!await csvReader.ReadAsync().ConfigureAwait(false))
                 {
@@ -84,9 +83,9 @@ namespace CsvHelper.FastDynamic
                 csvReader.ReadHeader();
             }
 
-            var csvHeader = new CsvHeader(context.HeaderRecord
-                                                 .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
-                                                 .ToArray());
+            var csvHeader = new CsvHeader(csvReader.HeaderRecord
+                                                   .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                                   .ToArray());
 
             while (await csvReader.ReadAsync().ConfigureAwait(false))
             {
@@ -94,17 +93,17 @@ namespace CsvHelper.FastDynamic
 
                 try
                 {
-                    var values = new object[context.HeaderRecord.Length];
+                    var values = new object[csvReader.HeaderRecord.Length];
 
-                    Array.Copy(context.Record, values, context.Record.Length);
+                    Array.Copy(csvReader.Parser.Record, values, csvReader.Parser.Record.Length);
 
                     record = new CsvRecord(csvHeader, values);
                 }
                 catch (Exception ex)
                 {
-                    var readerException = new ReaderException(context, "An unexpected error occurred.", ex);
+                    var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
 
-                    if (context.ReaderConfiguration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
+                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
                     {
                         throw readerException;
                     }

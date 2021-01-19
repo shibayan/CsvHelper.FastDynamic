@@ -10,13 +10,16 @@ namespace CsvHelper.FastDynamic
         public static void WriteDynamicRecords(this CsvWriter csvWriter, IEnumerable<object> records)
         {
             var context = csvWriter.Context;
+            var hasHeaderBeenWritten = false;
 
             foreach (var record in records)
             {
-                if (!context.HasHeaderBeenWritten && context.WriterConfiguration.HasHeaderRecord)
+                if (!hasHeaderBeenWritten && context.Configuration.HasHeaderRecord)
                 {
                     csvWriter.WriteHeaderInternal(record);
                     csvWriter.NextRecord();
+
+                    hasHeaderBeenWritten = true;
                 }
 
                 csvWriter.WriteRecordInternal(record);
@@ -27,13 +30,16 @@ namespace CsvHelper.FastDynamic
         public static async Task WriteDynamicRecordsAsync(this CsvWriter csvWriter, IEnumerable<object> records)
         {
             var context = csvWriter.Context;
+            var hasHeaderBeenWritten = false;
 
             foreach (var record in records)
             {
-                if (!context.HasHeaderBeenWritten && context.WriterConfiguration.HasHeaderRecord)
+                if (!hasHeaderBeenWritten && context.Configuration.HasHeaderRecord)
                 {
                     csvWriter.WriteHeaderInternal(record);
                     await csvWriter.NextRecordAsync().ConfigureAwait(false);
+
+                    hasHeaderBeenWritten = true;
                 }
 
                 csvWriter.WriteRecordInternal(record);
@@ -46,13 +52,16 @@ namespace CsvHelper.FastDynamic
         public static async Task WriteDynamicRecordsAsync(this CsvWriter csvWriter, IAsyncEnumerable<object> records)
         {
             var context = csvWriter.Context;
+            var hasHeaderBeenWritten = false;
 
             await foreach (var record in records.ConfigureAwait(false))
             {
-                if (!context.HasHeaderBeenWritten && context.WriterConfiguration.HasHeaderRecord)
+                if (!hasHeaderBeenWritten && context.Configuration.HasHeaderRecord)
                 {
                     csvWriter.WriteHeaderInternal(record);
                     await csvWriter.NextRecordAsync().ConfigureAwait(false);
+
+                    hasHeaderBeenWritten = true;
                 }
 
                 csvWriter.WriteRecordInternal(record);
@@ -77,8 +86,6 @@ namespace CsvHelper.FastDynamic
                 {
                     csvWriter.WriteField(fieldName);
                 }
-
-                csvWriter.Context.HasHeaderBeenWritten = true;
             }
             else if (record is IDynamicMetaObjectProvider dynamicObject)
             {
