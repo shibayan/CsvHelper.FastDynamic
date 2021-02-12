@@ -4,6 +4,8 @@ using System.IO;
 
 using BenchmarkDotNet.Attributes;
 
+using CsvHelper.FastDynamic.Performance.Internal;
+
 namespace CsvHelper.FastDynamic.Performance
 {
     [MemoryDiagnoser]
@@ -13,27 +15,50 @@ namespace CsvHelper.FastDynamic.Performance
 
         public WriterBenchmark()
         {
-            using var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture);
+            using (var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture))
+            {
+                _dynamicCsvData = csvReader.GetDynamicRecords();
+            }
 
-            _sampleCsvData = csvReader.GetDynamicRecords();
+            using (var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture))
+            {
+                _dictionaryCsvData = csvReader.GetDictionaryRecords();
+            }
         }
 
-        private readonly IReadOnlyList<dynamic> _sampleCsvData;
+        private readonly IReadOnlyList<dynamic> _dynamicCsvData;
+        private readonly IReadOnlyList<IDictionary<string, object>> _dictionaryCsvData;
 
         [Benchmark]
-        public void WriteRecords()
+        public void WriteRecords_DynamicObject()
         {
             using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
 
-            csvWriter.WriteRecords(_sampleCsvData);
+            csvWriter.WriteRecords(_dynamicCsvData);
         }
 
         [Benchmark]
-        public void WriteDynamicRecords()
+        public void WriteDynamicRecords_DynamicObject()
         {
             using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
 
-            csvWriter.WriteDynamicRecords(_sampleCsvData);
+            csvWriter.WriteDynamicRecords(_dynamicCsvData);
+        }
+
+        [Benchmark]
+        public void WriteRecords_DictionaryObject()
+        {
+            using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
+
+            csvWriter.WriteRecords(_dictionaryCsvData);
+        }
+
+        [Benchmark]
+        public void WriteDynamicRecords_DictionaryObject()
+        {
+            using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
+
+            csvWriter.WriteDynamicRecords(_dictionaryCsvData);
         }
     }
 }
