@@ -30,4 +30,4 @@ jobs:
       run: dotnet test -c Release
 
     - name: Lint C# code
-      run: dotnet format --dry-run --check --verbosity diagnostic
+      run: dotnet format --check --verbosity detailed
