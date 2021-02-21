@@ -22,7 +22,7 @@ namespace CsvHelper.FastDynamic.Performance.Internal
             }
 
             var headerRecord = csvReader.HeaderRecord
-                                        .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                        .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(new PrepareHeaderForMatchArgs(x, i)))
                                         .ToArray();
 
             while (csvReader.Read())
@@ -42,7 +42,7 @@ namespace CsvHelper.FastDynamic.Performance.Internal
                 {
                     var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
 
-                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
+                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(new ReadingExceptionOccurredArgs(readerException)) ?? true)
                     {
                         throw readerException;
                     }

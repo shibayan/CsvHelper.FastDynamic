@@ -23,7 +23,7 @@ namespace CsvHelper.FastDynamic
             }
 
             var csvHeader = new CsvHeader(csvReader.HeaderRecord
-                                                   .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                                   .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(new PrepareHeaderForMatchArgs(x, i)))
                                                    .ToArray());
 
             while (csvReader.Read())
@@ -45,7 +45,7 @@ namespace CsvHelper.FastDynamic
                 {
                     var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
 
-                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
+                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(new ReadingExceptionOccurredArgs(readerException)) ?? true)
                     {
                         throw readerException;
                     }
@@ -84,7 +84,7 @@ namespace CsvHelper.FastDynamic
             }
 
             var csvHeader = new CsvHeader(csvReader.HeaderRecord
-                                                   .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(x, i))
+                                                   .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(new PrepareHeaderForMatchArgs(x, i)))
                                                    .ToArray());
 
             while (await csvReader.ReadAsync().ConfigureAwait(false))
@@ -103,7 +103,7 @@ namespace CsvHelper.FastDynamic
                 {
                     var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
 
-                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(readerException) ?? true)
+                    if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(new ReadingExceptionOccurredArgs(readerException)) ?? true)
                     {
                         throw readerException;
                     }
