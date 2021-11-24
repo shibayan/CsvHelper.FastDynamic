@@ -2,20 +2,26 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="24.0.0" />
-  </ItemGroup>
 
   <PropertyGroup>
     <Authors>shibayan</Authors>
-    <Company>shibayan</Company>
     <Description>Fast dynamic records reader and writer extensions for CsvHelper</Description>
+    <PackageId>CsvHelper.FastDynamic</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>https://github.com/shibayan/CsvHelper.FastDynamic/releases</PackageReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/shibayan/CsvHelper.FastDynamic</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="27.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>

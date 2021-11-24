@@ -33,7 +33,7 @@ namespace CsvHelper.FastDynamic.Performance.Internal
                 {
                     record = new Dictionary<string, object>(headerRecord.Length);
 
-                    for (int i = 0; i < headerRecord.Length; i++)
+                    for (var i = 0; i < headerRecord.Length; i++)
                     {
                         record[headerRecord[i]] = csvReader.Parser[i];
                     }

@@ -17,7 +17,7 @@ namespace CsvHelper.FastDynamic
 
             _fieldNameLookup = new Dictionary<string, int>(fieldNames.Length, StringComparer.Ordinal);
 
-            for (int i = fieldNames.Length - 1; i >= 0; i--)
+            for (var i = fieldNames.Length - 1; i >= 0; i--)
             {
                 var name = fieldNames[i];
 
@@ -28,8 +28,7 @@ namespace CsvHelper.FastDynamic
             }
         }
 
-        public int IndexOfName(string name)
-            => name != null && _fieldNameLookup.TryGetValue(name, out var index) ? index : -1;
+        public int IndexOfName(string name) => name != null && _fieldNameLookup.TryGetValue(name, out var index) ? index : -1;
 
         public int AddField(string name)
         {
@@ -43,7 +42,7 @@ namespace CsvHelper.FastDynamic
                 throw new InvalidOperationException($"Field already exists: {name}");
             }
 
-            int oldLength = _fieldNames.Length;
+            var oldLength = _fieldNames.Length;
 
             Array.Resize(ref _fieldNames, oldLength + 1);
 
