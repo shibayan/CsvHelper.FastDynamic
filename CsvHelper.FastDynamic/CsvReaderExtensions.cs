@@ -34,7 +34,7 @@ namespace CsvHelper.FastDynamic
                 {
                     var values = new object[csvReader.HeaderRecord.Length];
 
-                    for (int i = 0; i < csvReader.HeaderRecord.Length; i++)
+                    for (var i = 0; i < csvReader.HeaderRecord.Length; i++)
                     {
                         values[i] = csvReader.Parser[i];
                     }

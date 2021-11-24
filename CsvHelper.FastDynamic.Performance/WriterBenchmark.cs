@@ -44,21 +44,5 @@ namespace CsvHelper.FastDynamic.Performance
 
             csvWriter.WriteDynamicRecords(_dynamicCsvData);
         }
-
-        [Benchmark]
-        public void WriteRecords_DictionaryObject()
-        {
-            using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
-
-            csvWriter.WriteRecords(_dictionaryCsvData);
-        }
-
-        [Benchmark]
-        public void WriteDynamicRecords_DictionaryObject()
-        {
-            using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
-
-            csvWriter.WriteDynamicRecords(_dictionaryCsvData);
-        }
     }
 }

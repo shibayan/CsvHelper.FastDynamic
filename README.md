@@ -1,15 +1,11 @@
 # CsvHelper.FastDynamic
- 
-![Build](https://github.com/shibayan/CsvHelper.FastDynamic/workflows/Build/badge.svg)
-[![License](https://img.shields.io/github/license/shibayan/CsvHelper.FastDynamic.svg)](https://github.com/shibayan/CsvHelper.FastDynamic/blob/master/LICENSE)
+
+[![Build](https://github.com/shibayan/CsvHelper.FastDynamic/workflows/Build/badge.svg)](https://github.com/shibayan/CsvHelper.FastDynamic/actions/workflows/build.yml)
+[![Downloads](https://badgen.net/nuget/dt/CsvHelper.FastDynamic)](https://www.nuget.org/packages/CsvHelper.FastDynamic/)
+[![NuGet](https://badgen.net/nuget/v/CsvHelper.FastDynamic)](https://www.nuget.org/packages/CsvHelper.FastDynamic/)
+[![License](https://badgen.net/github/license/shibayan/CsvHelper.FastDynamic)](https://github.com/shibayan/CsvHelper.FastDynamic/blob/master/LICENSE)
 
 Fast dynamic records reader and writer extensions for [CsvHelper](https://github.com/JoshClose/CsvHelper)
-
-## NuGet Package
-
-Package Name | Target Framework | NuGet
----|---|---
-CsvHelper.FastDynamic | .NET Standard 2.0/2.1 | [![NuGet](https://img.shields.io/nuget/v/CsvHelper.FastDynamic.svg)](https://www.nuget.org/packages/CsvHelper.FastDynamic)
 
 ## Install
 
@@ -66,34 +62,34 @@ class Program
 ### Reader
 
 ```
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19042
-Intel Core i9-10940X CPU 3.30GHz, 1 CPU, 28 logical and 14 physical cores
-.NET Core SDK=5.0.102
-  [Host]     : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1387 (21H2)
+AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
+.NET SDK=6.0.100
+  [Host]     : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
+  DefaultJob : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
 
 
-|               Method |       Mean |    Error |   StdDev |   Gen 0 |   Gen 1 | Gen 2 | Allocated |
-|--------------------- |-----------:|---------:|---------:|--------:|--------:|------:|----------:|
-|           GetRecords | 1,350.7 us | 26.83 us | 38.48 us | 78.1250 | 39.0625 |     - | 785.81 KB |
-| GetDictionaryRecords |   419.0 us |  8.24 us | 11.81 us | 53.2227 | 20.0195 |     - |  526.7 KB |
-|    GetDynamicRecords |   331.0 us |  6.59 us | 10.45 us | 41.5039 |  7.3242 |     - | 408.92 KB |
+|               Method |     Mean |   Error |  StdDev |   Gen 0 |   Gen 1 | Allocated |
+|--------------------- |---------:|--------:|--------:|--------:|--------:|----------:|
+|           GetRecords | 868.6 us | 3.65 us | 3.23 us | 36.1328 | 17.5781 |    602 KB |
+| GetDictionaryRecords | 254.7 us | 1.35 us | 1.19 us | 32.7148 | 16.1133 |    538 KB |
+|    GetDynamicRecords | 210.5 us | 1.07 us | 1.00 us | 25.6348 | 11.7188 |    420 KB |
 ```
 
 ### Writer
 
 ```
-BenchmarkDotNet=v0.12.1, OS=Windows 10.0.19042
-Intel Core i9-10940X CPU 3.30GHz, 1 CPU, 28 logical and 14 physical cores
-.NET Core SDK=5.0.102
-  [Host]     : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
-  DefaultJob : .NET Core 5.0.2 (CoreCLR 5.0.220.61120, CoreFX 5.0.220.61120), X64 RyuJIT
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1387 (21H2)
+AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
+.NET SDK=6.0.100
+  [Host]     : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
+  DefaultJob : .NET 6.0.0 (6.0.21.52210), X64 RyuJIT
 
 
-|              Method |       Mean |    Error |    StdDev |    Gen 0 |   Gen 1 | Gen 2 |  Allocated |
-|-------------------- |-----------:|---------:|----------:|---------:|--------:|------:|-----------:|
-|        WriteRecords | 4,104.7 us | 81.42 us | 142.60 us | 359.3750 | 70.3125 |     - | 3532.62 KB |
-| WriteDynamicRecords |   714.8 us | 14.16 us |  25.17 us |  12.6953 |  1.9531 |     - |  132.48 KB |
+|                               Method |     Mean |   Error |  StdDev |   Gen 0 |  Gen 1 | Allocated |
+|------------------------------------- |---------:|--------:|--------:|--------:|-------:|----------:|
+|           WriteRecords_DynamicObject | 818.5 us | 3.12 us | 2.92 us | 49.8047 | 9.7656 |    822 KB |
+|    WriteDynamicRecords_DynamicObject | 445.7 us | 2.05 us | 1.82 us |  7.8125 | 1.4648 |    134 KB |
 ```
 
 ## Thanks

@@ -31,7 +31,7 @@ namespace CsvHelper.FastDynamic
         {
             var names = _header.FieldNames;
 
-            for (int i = 0; i < names.Length; i++)
+            for (var i = 0; i < names.Length; i++)
             {
                 var value = i < _values.Length ? _values[i] : null;
 
@@ -53,7 +53,7 @@ namespace CsvHelper.FastDynamic
 
         void ICollection<KeyValuePair<string, object>>.Clear()
         {
-            for (int i = 0; i < _values.Length; i++)
+            for (var i = 0; i < _values.Length; i++)
             {
                 _values[i] = DeadValue.Default;
             }
@@ -131,7 +131,7 @@ namespace CsvHelper.FastDynamic
 
         internal bool ContainsKey(string key)
         {
-            int index = _header.IndexOfName(key);
+            var index = _header.IndexOfName(key);
 
             return index >= 0 && index < _values.Length && !(_values[index] is DeadValue);
         }
@@ -171,7 +171,7 @@ namespace CsvHelper.FastDynamic
                 throw new ArgumentNullException(nameof(key));
             }
 
-            int index = _header.IndexOfName(key);
+            var index = _header.IndexOfName(key);
 
             if (index < 0)
             {
@@ -187,13 +187,13 @@ namespace CsvHelper.FastDynamic
 
         internal object SetValue(int index, object value)
         {
-            int oldLength = _values.Length;
+            var oldLength = _values.Length;
 
             if (oldLength <= index)
             {
                 Array.Resize(ref _values, _header.FieldNames.Length);
 
-                for (int i = oldLength; i < _values.Length; i++)
+                for (var i = oldLength; i < _values.Length; i++)
                 {
                     _values[i] = DeadValue.Default;
                 }
