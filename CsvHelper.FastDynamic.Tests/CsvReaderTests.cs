@@ -11,7 +11,7 @@ namespace CsvHelper.FastDynamic.Tests
     public class CsvReaderTests
     {
         [Fact]
-        public void ReadDynamicRecords_Member()
+        public void ReadDynamicRecords()
         {
             var csvReader = CreateInMemoryReader();
 
@@ -20,7 +20,7 @@ namespace CsvHelper.FastDynamic.Tests
             Assert.NotNull(records);
             Assert.Equal(3, records.Count);
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
@@ -29,7 +29,7 @@ namespace CsvHelper.FastDynamic.Tests
         }
 
         [Fact]
-        public void ReadDynamicRecords_Indexer()
+        public void ReadDynamicRecords_UseIndexer()
         {
             var csvReader = CreateInMemoryReader();
 
@@ -38,7 +38,7 @@ namespace CsvHelper.FastDynamic.Tests
             Assert.NotNull(records);
             Assert.Equal(3, records.Count);
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
@@ -47,7 +47,7 @@ namespace CsvHelper.FastDynamic.Tests
         }
 
         [Fact]
-        public void ReadDynamicRecords_Dictionary()
+        public void ReadDynamicRecords_AsDictionary()
         {
             var csvReader = CreateInMemoryReader();
 
@@ -58,11 +58,32 @@ namespace CsvHelper.FastDynamic.Tests
             Assert.NotNull(records);
             Assert.Equal(3, records.Length);
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
                 Assert.Equal(TestData.CsvRecords[i]["Location"], records[i]["Location"]);
+            }
+        }
+
+        [Fact]
+        public void ReadDynamicRecords_WithMissingHeader()
+        {
+            var csvReader = CreateInMemoryReader_WithMissingHeader();
+
+            var records = csvReader.GetDynamicRecords()
+                                   .Cast<IDictionary<string, object>>()
+                                   .ToArray();
+
+            Assert.NotNull(records);
+            Assert.Equal(3, records.Length);
+
+            for (var i = 0; i < 3; i++)
+            {
+                Assert.Equal(2, records[i].Count);
+
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
             }
         }
 
@@ -76,11 +97,32 @@ namespace CsvHelper.FastDynamic.Tests
             Assert.NotNull(records);
             Assert.Equal(3, records.Count);
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
                 Assert.Equal(TestData.CsvRecords[i]["Location"], records[i].Location);
+            }
+        }
+
+        [Fact]
+        public async Task ReadDynamicRecordsAsync_WithMissingHeader()
+        {
+            var csvReader = CreateInMemoryReader_WithMissingHeader();
+
+            var records = (await csvReader.GetDynamicRecordsAsync())
+                          .Cast<IDictionary<string, object>>()
+                          .ToArray();
+
+            Assert.NotNull(records);
+            Assert.Equal(3, records.Length);
+
+            for (var i = 0; i < 3; i++)
+            {
+                Assert.Equal(2, records[i].Count);
+
+                Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+                Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
             }
         }
 
@@ -91,7 +133,7 @@ namespace CsvHelper.FastDynamic.Tests
 
             var records = csvReader.EnumerateDynamicRecords();
 
-            int count = 0;
+            var count = 0;
 
             foreach (var record in records)
             {
@@ -115,7 +157,7 @@ namespace CsvHelper.FastDynamic.Tests
 
             var records = csvReader.EnumerateDynamicRecordsAsync();
 
-            int count = 0;
+            var count = 0;
 
             await foreach (var record in records)
             {
@@ -139,12 +181,12 @@ namespace CsvHelper.FastDynamic.Tests
 
             var records = csvReader.GetDynamicRecords();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 records[i].Append = $"test-{i}";
             }
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
@@ -161,12 +203,12 @@ namespace CsvHelper.FastDynamic.Tests
 
             var records = csvReader.GetDynamicRecords();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 records[i]["Append"] = $"test-{i}";
             }
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
@@ -185,12 +227,12 @@ namespace CsvHelper.FastDynamic.Tests
                                    .Cast<IDictionary<string, object>>()
                                    .ToArray();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 records[i]["Append"] = $"test-{i}";
             }
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
                 Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
@@ -203,6 +245,11 @@ namespace CsvHelper.FastDynamic.Tests
         private CsvReader CreateInMemoryReader()
         {
             return new CsvReader(new StringReader(TestData.CsvContent), CultureInfo.InvariantCulture);
+        }
+
+        private CsvReader CreateInMemoryReader_WithMissingHeader()
+        {
+            return new CsvReader(new StringReader(TestData.CsvContentWithMissingHeader), CultureInfo.InvariantCulture);
         }
     }
 }
