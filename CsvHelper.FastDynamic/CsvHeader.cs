@@ -1,55 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CsvHelper.FastDynamic
+namespace CsvHelper.FastDynamic;
+
+// Thanks, from https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperTable.cs
+internal sealed class CsvHeader
 {
-    // Thanks, from https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperTable.cs
-    internal sealed class CsvHeader
+    private string[] _fieldNames;
+    private readonly Dictionary<string, int> _fieldNameLookup;
+
+    public string[] FieldNames => _fieldNames;
+
+    public CsvHeader(string[] fieldNames)
     {
-        private string[] _fieldNames;
-        private readonly Dictionary<string, int> _fieldNameLookup;
+        _fieldNames = fieldNames ?? throw new ArgumentNullException(nameof(fieldNames));
 
-        public string[] FieldNames => _fieldNames;
+        _fieldNameLookup = new Dictionary<string, int>(fieldNames.Length, StringComparer.Ordinal);
 
-        public CsvHeader(string[] fieldNames)
+        for (var i = fieldNames.Length - 1; i >= 0; i--)
         {
-            _fieldNames = fieldNames ?? throw new ArgumentNullException(nameof(fieldNames));
+            var name = fieldNames[i];
 
-            _fieldNameLookup = new Dictionary<string, int>(fieldNames.Length, StringComparer.Ordinal);
-
-            for (var i = fieldNames.Length - 1; i >= 0; i--)
+            if (name != null)
             {
-                var name = fieldNames[i];
-
-                if (name != null)
-                {
-                    _fieldNameLookup[name] = i;
-                }
+                _fieldNameLookup[name] = i;
             }
         }
+    }
 
-        public int IndexOfName(string name) => name != null && _fieldNameLookup.TryGetValue(name, out var index) ? index : -1;
+    public int IndexOfName(string name) => name != null && _fieldNameLookup.TryGetValue(name, out var index) ? index : -1;
 
-        public int AddField(string name)
+    public int AddField(string name)
+    {
+        if (name == null)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            if (_fieldNameLookup.ContainsKey(name))
-            {
-                throw new InvalidOperationException($"Field already exists: {name}");
-            }
-
-            var oldLength = _fieldNames.Length;
-
-            Array.Resize(ref _fieldNames, oldLength + 1);
-
-            _fieldNames[oldLength] = name;
-            _fieldNameLookup[name] = oldLength;
-
-            return oldLength;
+            throw new ArgumentNullException(nameof(name));
         }
+
+        if (_fieldNameLookup.ContainsKey(name))
+        {
+            throw new InvalidOperationException($"Field already exists: {name}");
+        }
+
+        var oldLength = _fieldNames.Length;
+
+        Array.Resize(ref _fieldNames, oldLength + 1);
+
+        _fieldNames[oldLength] = name;
+        _fieldNameLookup[name] = oldLength;
+
+        return oldLength;
     }
 }

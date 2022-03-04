@@ -1,13 +1,6 @@
 ﻿using BenchmarkDotNet.Running;
 
-namespace CsvHelper.FastDynamic.Performance
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            BenchmarkRunner.Run<ReaderBenchmark>();
-            BenchmarkRunner.Run<WriterBenchmark>();
-        }
-    }
-}
+using CsvHelper.FastDynamic.Performance;
+
+BenchmarkRunner.Run<ReaderBenchmark>();
+BenchmarkRunner.Run<WriterBenchmark>();
