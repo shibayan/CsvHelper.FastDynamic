@@ -4,45 +4,36 @@ using System.IO;
 
 using BenchmarkDotNet.Attributes;
 
-using CsvHelper.FastDynamic.Performance.Internal;
+namespace CsvHelper.FastDynamic.Performance;
 
-namespace CsvHelper.FastDynamic.Performance
+[MemoryDiagnoser]
+public class WriterBenchmark
 {
-    [MemoryDiagnoser]
-    public class WriterBenchmark
+    private const string SampleCsvFile = @".\sampledata\SFO_Airport_Monthly_Utility_Consumption_for_Natural_Gas__Water__and_Electricity.csv";
+
+    public WriterBenchmark()
     {
-        private const string SampleCsvFile = @".\sampledata\SFO_Airport_Monthly_Utility_Consumption_for_Natural_Gas__Water__and_Electricity.csv";
-
-        public WriterBenchmark()
+        using (var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture))
         {
-            using (var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture))
-            {
-                _dynamicCsvData = csvReader.GetDynamicRecords();
-            }
-
-            using (var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture))
-            {
-                _dictionaryCsvData = csvReader.GetDictionaryRecords();
-            }
+            _dynamicCsvData = csvReader.GetDynamicRecords();
         }
+    }
 
-        private readonly IReadOnlyList<dynamic> _dynamicCsvData;
-        private readonly IReadOnlyList<IDictionary<string, object>> _dictionaryCsvData;
+    private readonly IReadOnlyList<dynamic> _dynamicCsvData;
 
-        [Benchmark]
-        public void WriteRecords_DynamicObject()
-        {
-            using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
+    [Benchmark]
+    public void WriteRecords_DynamicObject()
+    {
+        using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
 
-            csvWriter.WriteRecords(_dynamicCsvData);
-        }
+        csvWriter.WriteRecords(_dynamicCsvData);
+    }
 
-        [Benchmark]
-        public void WriteDynamicRecords_DynamicObject()
-        {
-            using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
+    [Benchmark]
+    public void WriteDynamicRecords_DynamicObject()
+    {
+        using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);
 
-            csvWriter.WriteDynamicRecords(_dynamicCsvData);
-        }
+        csvWriter.WriteDynamicRecords(_dynamicCsvData);
     }
 }
