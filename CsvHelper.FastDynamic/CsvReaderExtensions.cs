@@ -7,8 +7,7 @@ namespace CsvHelper.FastDynamic
 {
     public static class CsvReaderExtensions
     {
-        public static IReadOnlyList<dynamic> GetDynamicRecords(this CsvReader csvReader)
-            => csvReader.EnumerateDynamicRecords().ToArray();
+        public static IReadOnlyList<dynamic> GetDynamicRecords(this CsvReader csvReader) => csvReader.EnumerateDynamicRecords().ToArray();
 
         public static IEnumerable<dynamic> EnumerateDynamicRecords(this CsvReader csvReader)
         {
@@ -34,10 +33,7 @@ namespace CsvHelper.FastDynamic
                 {
                     var values = new object[csvReader.HeaderRecord.Length];
 
-                    for (var i = 0; i < csvReader.HeaderRecord.Length; i++)
-                    {
-                        values[i] = csvReader.Parser[i];
-                    }
+                    Array.Copy(csvReader.Parser.Record, values, csvReader.HeaderRecord.Length);
 
                     record = new CsvRecord(csvHeader, values);
                 }
@@ -95,7 +91,7 @@ namespace CsvHelper.FastDynamic
                 {
                     var values = new object[csvReader.HeaderRecord.Length];
 
-                    Array.Copy(csvReader.Parser.Record, values, csvReader.Parser.Record.Length);
+                    Array.Copy(csvReader.Parser.Record, values, csvReader.HeaderRecord.Length);
 
                     record = new CsvRecord(csvHeader, values);
                 }
