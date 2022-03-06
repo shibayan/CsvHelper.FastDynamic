@@ -69,8 +69,7 @@ internal sealed class CsvRecord : IDictionary<string, object>, IReadOnlyDictiona
         }
     }
 
-    bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item)
-        => ((IDictionary<string, object>)this).Remove(item.Key);
+    bool ICollection<KeyValuePair<string, object>>.Remove(KeyValuePair<string, object> item) => ((IDictionary<string, object>)this).Remove(item.Key);
 
     int ICollection<KeyValuePair<string, object>>.Count => _values.Count(t => t is not DeadValue);
 
@@ -164,7 +163,7 @@ internal sealed class CsvRecord : IDictionary<string, object>, IReadOnlyDictiona
 
     internal object SetValue(string key, object value, bool isAdd)
     {
-        if (key == null)
+        if (key is null)
         {
             throw new ArgumentNullException(nameof(key));
         }

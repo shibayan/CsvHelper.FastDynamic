@@ -77,7 +77,7 @@ public static class CsvWriterExtensions
         {
             var fieldNames = dictionary.Keys;
 
-            if (csvWriter.Configuration.DynamicPropertySort != null)
+            if (csvWriter.Configuration.DynamicPropertySort is not null)
             {
                 fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
             }
@@ -103,7 +103,7 @@ public static class CsvWriterExtensions
         {
             var fieldNames = dictionary.Keys;
 
-            if (csvWriter.Configuration.DynamicPropertySort != null)
+            if (csvWriter.Configuration.DynamicPropertySort is not null)
             {
                 fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
             }
