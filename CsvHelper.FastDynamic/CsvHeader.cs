@@ -21,18 +21,18 @@ internal sealed class CsvHeader
         {
             var name = fieldNames[i];
 
-            if (name != null)
+            if (name is not null)
             {
                 _fieldNameLookup[name] = i;
             }
         }
     }
 
-    public int IndexOfName(string name) => name != null && _fieldNameLookup.TryGetValue(name, out var index) ? index : -1;
+    public int IndexOfName(string name) => name is not null && _fieldNameLookup.TryGetValue(name, out var index) ? index : -1;
 
     public int AddField(string name)
     {
-        if (name == null)
+        if (name is null)
         {
             throw new ArgumentNullException(nameof(name));
         }
