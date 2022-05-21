@@ -156,10 +156,7 @@ internal sealed class CsvRecord : IDictionary<string, object>, IReadOnlyDictiona
         return true;
     }
 
-    public object SetValue(string key, object value)
-    {
-        return SetValue(key, value, false);
-    }
+    public object SetValue(string key, object value) => SetValue(key, value, false);
 
     internal object SetValue(string key, object value, bool isAdd)
     {

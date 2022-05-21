@@ -13,10 +13,9 @@ public class WriterBenchmark
 
     public WriterBenchmark()
     {
-        using (var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture))
-        {
-            _dynamicCsvData = csvReader.GetDynamicRecords();
-        }
+        using var csvReader = new CsvReader(new StreamReader(SampleCsvFile), CultureInfo.InvariantCulture);
+
+        _dynamicCsvData = csvReader.GetDynamicRecords();
     }
 
     private readonly IReadOnlyList<dynamic> _dynamicCsvData;

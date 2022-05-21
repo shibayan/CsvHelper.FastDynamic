@@ -73,53 +73,59 @@ public static class CsvWriterExtensions
 
     private static void WriteHeaderInternal(this CsvWriter csvWriter, object record)
     {
-        if (record is IReadOnlyDictionary<string, object> dictionary)
+        switch (record)
         {
-            var fieldNames = dictionary.Keys;
-
-            if (csvWriter.Configuration.DynamicPropertySort is not null)
+            case IReadOnlyDictionary<string, object> dictionary:
             {
-                fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
-            }
+                var fieldNames = dictionary.Keys;
 
-            foreach (var fieldName in fieldNames)
-            {
-                csvWriter.WriteField(fieldName);
+                if (csvWriter.Configuration.DynamicPropertySort is not null)
+                {
+                    fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
+                }
+
+                foreach (var fieldName in fieldNames)
+                {
+                    csvWriter.WriteField(fieldName);
+                }
+
+                break;
             }
-        }
-        else if (record is IDynamicMetaObjectProvider dynamicObject)
-        {
-            csvWriter.WriteDynamicHeader(dynamicObject);
-        }
-        else
-        {
-            csvWriter.WriteHeader(record.GetType());
+            case IDynamicMetaObjectProvider dynamicObject:
+                csvWriter.WriteDynamicHeader(dynamicObject);
+                break;
+            default:
+                csvWriter.WriteHeader(record.GetType());
+                break;
         }
     }
 
     private static void WriteRecordInternal(this CsvWriter csvWriter, object record)
     {
-        if (record is IReadOnlyDictionary<string, object> dictionary)
+        switch (record)
         {
-            var fieldNames = dictionary.Keys;
-
-            if (csvWriter.Configuration.DynamicPropertySort is not null)
+            case IReadOnlyDictionary<string, object> dictionary:
             {
-                fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
-            }
+                var fieldNames = dictionary.Keys;
 
-            foreach (var fieldName in fieldNames)
-            {
-                csvWriter.WriteField(dictionary[fieldName]);
+                if (csvWriter.Configuration.DynamicPropertySort is not null)
+                {
+                    fieldNames = fieldNames.OrderBy(x => x, csvWriter.Configuration.DynamicPropertySort);
+                }
+
+                foreach (var fieldName in fieldNames)
+                {
+                    csvWriter.WriteField(dictionary[fieldName]);
+                }
+
+                break;
             }
-        }
-        else if (record is IDynamicMetaObjectProvider)
-        {
-            csvWriter.WriteRecord(record);
-        }
-        else
-        {
-            csvWriter.WriteRecord(record);
+            case IDynamicMetaObjectProvider dynamicObject:
+                csvWriter.WriteRecord(dynamicObject);
+                break;
+            default:
+                csvWriter.WriteRecord(record);
+                break;
         }
     }
 }
