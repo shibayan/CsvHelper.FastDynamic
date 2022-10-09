@@ -11,7 +11,7 @@ namespace CsvHelper.FastDynamic.Tests;
 public class CsvReaderTests
 {
     [Fact]
-    public void ReadDynamicRecords()
+    public void GetDynamicRecords()
     {
         var csvReader = CreateInMemoryReader();
 
@@ -29,7 +29,7 @@ public class CsvReaderTests
     }
 
     [Fact]
-    public void ReadDynamicRecords_UseIndexer()
+    public void GetDynamicRecords_UseIndexer()
     {
         var csvReader = CreateInMemoryReader();
 
@@ -47,7 +47,7 @@ public class CsvReaderTests
     }
 
     [Fact]
-    public void ReadDynamicRecords_AsDictionary()
+    public void GetDynamicRecords_AsDictionary()
     {
         var csvReader = CreateInMemoryReader();
 
@@ -67,7 +67,7 @@ public class CsvReaderTests
     }
 
     [Fact]
-    public void ReadDynamicRecords_WithMissingHeader()
+    public void GetDynamicRecords_WithMissingHeader()
     {
         var csvReader = CreateInMemoryReader_WithMissingHeader();
 
@@ -88,7 +88,7 @@ public class CsvReaderTests
     }
 
     [Fact]
-    public async Task ReadDynamicRecordsAsync()
+    public async Task GetDynamicRecordsAsync()
     {
         var csvReader = CreateInMemoryReader();
 
@@ -106,7 +106,45 @@ public class CsvReaderTests
     }
 
     [Fact]
-    public async Task ReadDynamicRecordsAsync_WithMissingHeader()
+    public async Task GetDynamicRecordsAsync_UseIndexer()
+    {
+        var csvReader = CreateInMemoryReader();
+
+        var records = await csvReader.GetDynamicRecordsAsync();
+
+        Assert.NotNull(records);
+        Assert.Equal(3, records.Count);
+
+        for (var i = 0; i < 3; i++)
+        {
+            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+            Assert.Equal(TestData.CsvRecords[i]["Location"], records[i]["Location"]);
+        }
+    }
+
+    [Fact]
+    public async Task GetDynamicRecordsAsync_AsDictionary()
+    {
+        var csvReader = CreateInMemoryReader();
+
+        var records = (await csvReader.GetDynamicRecordsAsync())
+                      .Cast<IDictionary<string, object>>()
+                      .ToArray();
+
+        Assert.NotNull(records);
+        Assert.Equal(3, records.Length);
+
+        for (var i = 0; i < 3; i++)
+        {
+            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
+            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+            Assert.Equal(TestData.CsvRecords[i]["Location"], records[i]["Location"]);
+        }
+    }
+
+    [Fact]
+    public async Task GetDynamicRecordsAsync_WithMissingHeader()
     {
         var csvReader = CreateInMemoryReader_WithMissingHeader();
 

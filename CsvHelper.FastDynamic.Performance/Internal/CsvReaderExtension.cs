@@ -11,7 +11,7 @@ internal static class CsvReaderExtension
 
     internal static IEnumerable<IDictionary<string, object>> EnumerateDictionaryRecords(this CsvReader csvReader)
     {
-        if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord == null)
+        if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord is null)
         {
             if (!csvReader.Read())
             {
@@ -37,6 +37,45 @@ internal static class CsvReaderExtension
                 {
                     record[headerRecord[i]] = csvReader.Parser[i];
                 }
+            }
+            catch (Exception ex)
+            {
+                var readerException = new ReaderException(csvReader.Context, "An unexpected error occurred.", ex);
+
+                if (csvReader.Configuration.ReadingExceptionOccurred?.Invoke(new ReadingExceptionOccurredArgs(readerException)) ?? true)
+                {
+                    throw readerException;
+                }
+
+                continue;
+            }
+
+            yield return record;
+        }
+    }
+
+    internal static IReadOnlyList<string[]> GetRawRecords(this CsvReader csvReader)
+        => csvReader.EnumerateRawRecords().ToArray();
+
+    internal static IEnumerable<string[]> EnumerateRawRecords(this CsvReader csvReader)
+    {
+        if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord is null)
+        {
+            if (!csvReader.Read())
+            {
+                yield break;
+            }
+
+            csvReader.ReadHeader();
+        }
+
+        while (csvReader.Read())
+        {
+            string[] record;
+
+            try
+            {
+                record = csvReader.Parser.Record;
             }
             catch (Exception ex)
             {

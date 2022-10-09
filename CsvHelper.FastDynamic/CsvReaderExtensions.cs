@@ -33,7 +33,10 @@ public static class CsvReaderExtensions
             {
                 var values = new object[csvReader.HeaderRecord.Length];
 
-                Array.Copy(csvReader.Parser.Record, values, csvReader.HeaderRecord.Length);
+                for (var i = 0; i < csvReader.HeaderRecord.Length; i++)
+                {
+                    values[i] = csvReader.Parser[i];
+                }
 
                 record = new CsvRecord(csvHeader, values);
             }
@@ -91,7 +94,10 @@ public static class CsvReaderExtensions
             {
                 var values = new object[csvReader.HeaderRecord.Length];
 
-                Array.Copy(csvReader.Parser.Record, values, csvReader.HeaderRecord.Length);
+                for (var i = 0; i < csvReader.HeaderRecord.Length; i++)
+                {
+                    values[i] = csvReader.Parser[i];
+                }
 
                 record = new CsvRecord(csvHeader, values);
             }

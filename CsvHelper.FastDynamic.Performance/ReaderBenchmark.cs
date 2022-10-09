@@ -21,7 +21,7 @@ public class ReaderBenchmark
 
     private readonly string _sampleCsvData;
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public IReadOnlyList<dynamic> GetRecords()
     {
         using var csvReader = new CsvReader(new StringReader(_sampleCsvData), CultureInfo.InvariantCulture);
@@ -43,5 +43,13 @@ public class ReaderBenchmark
         using var csvReader = new CsvReader(new StringReader(_sampleCsvData), CultureInfo.InvariantCulture);
 
         return csvReader.GetDynamicRecords();
+    }
+
+    [Benchmark]
+    public IReadOnlyList<string[]> GetRawRecords()
+    {
+        using var csvReader = new CsvReader(new StringReader(_sampleCsvData), CultureInfo.InvariantCulture);
+
+        return csvReader.GetRawRecords();
     }
 }
