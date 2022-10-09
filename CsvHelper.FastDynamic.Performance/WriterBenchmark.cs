@@ -20,7 +20,7 @@ public class WriterBenchmark
 
     private readonly IReadOnlyList<dynamic> _dynamicCsvData;
 
-    [Benchmark]
+    [Benchmark(Baseline = true)]
     public void WriteRecords_DynamicObject()
     {
         using var csvWriter = new CsvWriter(new StringWriter(), CultureInfo.InvariantCulture);

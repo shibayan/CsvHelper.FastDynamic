@@ -105,10 +105,7 @@ internal sealed class CsvRecord : IDictionary<string, object>, IReadOnlyDictiona
 
     int IReadOnlyCollection<KeyValuePair<string, object>>.Count => _values.Count(x => x is not DeadValue);
 
-    object IReadOnlyDictionary<string, object>.this[string key]
-    {
-        get => TryGetValue(key, out var value) ? value : null;
-    }
+    object IReadOnlyDictionary<string, object>.this[string key] => TryGetValue(key, out var value) ? value : null;
 
     bool IReadOnlyDictionary<string, object>.TryGetValue(string key, out object value) => TryGetValue(key, out value);
 

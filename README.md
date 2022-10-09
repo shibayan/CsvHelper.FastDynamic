@@ -35,7 +35,7 @@ foreach (var @record in records)
 }
 ```
 
-### Async CSV Enumerate (.NET Standard 2.1 / C# 8.0)
+### Async CSV Enumerate (.NET Standard 2.1 / C# 8.0 or later)
 
 ```csharp
 using CsvHelper;
@@ -56,34 +56,35 @@ await foreach (var @record in records)
 ### Dynamic record reader
 
 ```
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.22000
+BenchmarkDotNet=v0.13.2, OS=Windows 11 (10.0.22621.608)
 AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
-.NET SDK=6.0.200
-  [Host]     : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
-  DefaultJob : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
+.NET SDK=6.0.401
+  [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
+  DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
 
 
-|               Method |     Mean |   Error |  StdDev |   Gen 0 |   Gen 1 | Allocated |
-|--------------------- |---------:|--------:|--------:|--------:|--------:|----------:|
-|           GetRecords | 834.0 us | 3.04 us | 2.85 us | 36.1328 | 17.5781 |    602 KB |
-| GetDictionaryRecords | 247.4 us | 0.89 us | 0.78 us | 32.7148 | 16.1133 |    538 KB |
-|    GetDynamicRecords | 227.5 us | 0.85 us | 0.80 us | 28.3203 | 13.4277 |    464 KB |
+|               Method |     Mean |   Error |  StdDev | Ratio |    Gen0 |    Gen1 | Allocated | Alloc Ratio |
+|--------------------- |---------:|--------:|--------:|------:|--------:|--------:|----------:|------------:|
+|           GetRecords | 878.3 us | 3.62 us | 3.20 us |  1.00 | 31.2500 | 15.6250 | 510.84 KB |        1.00 |
+| GetDictionaryRecords | 208.0 us | 0.85 us | 0.76 us |  0.24 | 21.7285 | 10.7422 | 355.03 KB |        0.69 |
+|    GetDynamicRecords | 176.4 us | 1.07 us | 0.95 us |  0.20 | 14.4043 |  6.3477 | 237.26 KB |        0.46 |
+|        GetRawRecords | 154.7 us | 1.08 us | 1.01 us |  0.18 | 13.1836 |  5.8594 | 218.98 KB |        0.43 |
 ```
 
 ### Dynamic record writer
 
 ```
-BenchmarkDotNet=v0.13.1, OS=Windows 10.0.22000
+BenchmarkDotNet=v0.13.2, OS=Windows 11 (10.0.22621.608)
 AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
-.NET SDK=6.0.200
-  [Host]     : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
-  DefaultJob : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
+.NET SDK=6.0.401
+  [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
+  DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
 
 
-|                            Method |     Mean |   Error |  StdDev |   Gen 0 |  Gen 1 | Allocated |
-|---------------------------------- |---------:|--------:|--------:|--------:|-------:|----------:|
-|        WriteRecords_DynamicObject | 819.2 us | 0.85 us | 0.76 us | 49.8047 | 9.7656 |    822 KB |
-| WriteDynamicRecords_DynamicObject | 455.0 us | 2.22 us | 1.97 us |  7.8125 | 1.4648 |    134 KB |
+|                            Method |     Mean |   Error |  StdDev | Ratio |    Gen0 |   Gen1 | Allocated | Alloc Ratio |
+|---------------------------------- |---------:|--------:|--------:|------:|--------:|-------:|----------:|------------:|
+|        WriteRecords_DynamicObject | 873.9 us | 2.82 us | 2.64 us |  1.00 | 55.6641 | 9.7656 | 914.53 KB |        1.00 |
+| WriteDynamicRecords_DynamicObject | 498.9 us | 2.52 us | 2.36 us |  0.57 | 13.6719 | 2.4414 | 225.84 KB |        0.25 |
 ```
 
 ## Thanks
