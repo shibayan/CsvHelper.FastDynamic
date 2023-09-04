@@ -11,7 +11,7 @@ public static class CsvReaderExtensions
 
     public static IEnumerable<dynamic> EnumerateDynamicRecords(this CsvReader csvReader)
     {
-        if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord is null)
+        if (csvReader.HeaderRecord is null)
         {
             if (!csvReader.Read())
             {
@@ -56,8 +56,6 @@ public static class CsvReaderExtensions
         }
     }
 
-#if NETSTANDARD2_1
-
     public static async Task<IReadOnlyList<dynamic>> GetDynamicRecordsAsync(this CsvReader csvReader)
     {
         var records = new List<dynamic>();
@@ -72,7 +70,7 @@ public static class CsvReaderExtensions
 
     public static async IAsyncEnumerable<dynamic> EnumerateDynamicRecordsAsync(this CsvReader csvReader)
     {
-        if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord is null)
+        if (csvReader.HeaderRecord is null)
         {
             if (!await csvReader.ReadAsync().ConfigureAwait(false))
             {
@@ -116,6 +114,4 @@ public static class CsvReaderExtensions
             yield return record;
         }
     }
-
-#endif
 }

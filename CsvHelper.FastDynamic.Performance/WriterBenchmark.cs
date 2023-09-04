@@ -3,10 +3,12 @@ using System.Globalization;
 using System.IO;
 
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnosers;
 
 namespace CsvHelper.FastDynamic.Performance;
 
 [MemoryDiagnoser]
+[EventPipeProfiler(EventPipeProfile.CpuSampling)]
 public class WriterBenchmark
 {
     private const string SampleCsvFile = @".\sampledata\SFO_Airport_Monthly_Utility_Consumption_for_Natural_Gas__Water__and_Electricity.csv";

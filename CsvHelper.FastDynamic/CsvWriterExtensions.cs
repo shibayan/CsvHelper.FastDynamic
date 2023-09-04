@@ -47,8 +47,6 @@ public static class CsvWriterExtensions
         }
     }
 
-#if NETSTANDARD2_1
-
     public static async Task WriteDynamicRecordsAsync(this CsvWriter csvWriter, IAsyncEnumerable<object> records)
     {
         var context = csvWriter.Context;
@@ -68,8 +66,6 @@ public static class CsvWriterExtensions
             await csvWriter.NextRecordAsync().ConfigureAwait(false);
         }
     }
-
-#endif
 
     private static void WriteHeaderInternal(this CsvWriter csvWriter, object record)
     {

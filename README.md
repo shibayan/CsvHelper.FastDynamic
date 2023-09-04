@@ -53,38 +53,36 @@ await foreach (var @record in records)
 
 ## Performance
 
-### Dynamic record reader
+### Dynamic records reader
 
 ```
-BenchmarkDotNet=v0.13.2, OS=Windows 11 (10.0.22621.608)
-AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
-.NET SDK=6.0.401
-  [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-
+BenchmarkDotNet v0.13.7, Windows 11 (10.0.22621.2215/22H2/2022Update/SunValley2)
+AMD Ryzen 9 7950X, 1 CPU, 32 logical and 16 physical cores
+.NET SDK 7.0.400
+  [Host]     : .NET 7.0.10 (7.0.1023.36312), X64 RyuJIT AVX2
+  DefaultJob : .NET 7.0.10 (7.0.1023.36312), X64 RyuJIT AVX2
 
 |               Method |     Mean |   Error |  StdDev | Ratio |    Gen0 |    Gen1 | Allocated | Alloc Ratio |
 |--------------------- |---------:|--------:|--------:|------:|--------:|--------:|----------:|------------:|
-|           GetRecords | 878.3 us | 3.62 us | 3.20 us |  1.00 | 31.2500 | 15.6250 | 510.84 KB |        1.00 |
-| GetDictionaryRecords | 208.0 us | 0.85 us | 0.76 us |  0.24 | 21.7285 | 10.7422 | 355.03 KB |        0.69 |
-|    GetDynamicRecords | 176.4 us | 1.07 us | 0.95 us |  0.20 | 14.4043 |  6.3477 | 237.26 KB |        0.46 |
-|        GetRawRecords | 154.7 us | 1.08 us | 1.01 us |  0.18 | 13.1836 |  5.8594 | 218.98 KB |        0.43 |
+|           GetRecords | 684.3 μs | 3.24 μs | 3.03 μs |  1.00 | 31.2500 | 15.6250 | 510.87 KB |        1.00 |
+| GetDictionaryRecords | 200.3 μs | 0.71 μs | 0.66 μs |  0.29 | 21.7285 | 21.4844 | 355.05 KB |        0.70 |
+|    GetDynamicRecords | 163.7 μs | 0.91 μs | 0.85 μs |  0.24 | 14.4043 |  5.1270 | 237.28 KB |        0.46 |
+|        GetRawRecords | 154.1 μs | 0.45 μs | 0.38 μs |  0.23 | 13.1836 |  5.1270 |    219 KB |        0.43 |
 ```
 
-### Dynamic record writer
+### Dynamic records writer
 
 ```
-BenchmarkDotNet=v0.13.2, OS=Windows 11 (10.0.22621.608)
-AMD Ryzen 9 5950X, 1 CPU, 32 logical and 16 physical cores
-.NET SDK=6.0.401
-  [Host]     : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
-  DefaultJob : .NET 6.0.9 (6.0.922.41905), X64 RyuJIT AVX2
+BenchmarkDotNet v0.13.7, Windows 11 (10.0.22621.2215/22H2/2022Update/SunValley2)
+AMD Ryzen 9 7950X, 1 CPU, 32 logical and 16 physical cores
+.NET SDK 7.0.400
+  [Host]     : .NET 7.0.10 (7.0.1023.36312), X64 RyuJIT AVX2
+  DefaultJob : .NET 7.0.10 (7.0.1023.36312), X64 RyuJIT AVX2
 
-
-|                            Method |     Mean |   Error |  StdDev | Ratio |    Gen0 |   Gen1 | Allocated | Alloc Ratio |
-|---------------------------------- |---------:|--------:|--------:|------:|--------:|-------:|----------:|------------:|
-|        WriteRecords_DynamicObject | 873.9 us | 2.82 us | 2.64 us |  1.00 | 55.6641 | 9.7656 | 914.53 KB |        1.00 |
-| WriteDynamicRecords_DynamicObject | 498.9 us | 2.52 us | 2.36 us |  0.57 | 13.6719 | 2.4414 | 225.84 KB |        0.25 |
+|                            Method |     Mean |   Error |  StdDev | Ratio |    Gen0 |    Gen1 | Allocated | Alloc Ratio |
+|---------------------------------- |---------:|--------:|--------:|------:|--------:|--------:|----------:|------------:|
+|        WriteRecords_DynamicObject | 670.2 μs | 4.27 μs | 3.99 μs |  1.00 | 55.6641 | 12.6953 | 914.65 KB |        1.00 |
+| WriteDynamicRecords_DynamicObject | 414.1 μs | 1.93 μs | 1.80 μs |  0.62 | 13.6719 |  2.9297 | 225.95 KB |        0.25 |
 ```
 
 ## Thanks
