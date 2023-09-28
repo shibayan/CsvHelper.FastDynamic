@@ -11,7 +11,7 @@ public static class CsvReaderExtensions
 
     public static IEnumerable<dynamic> EnumerateDynamicRecords(this CsvReader csvReader)
     {
-        if (csvReader.HeaderRecord is null)
+        if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord is null)
         {
             if (!csvReader.Read())
             {
@@ -21,19 +21,24 @@ public static class CsvReaderExtensions
             csvReader.ReadHeader();
         }
 
-        var csvHeader = new CsvHeader(csvReader.HeaderRecord
-                                               .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(new PrepareHeaderForMatchArgs(x, i)))
-                                               .ToArray());
+        if (!csvReader.Read())
+        {
+            yield break;
+        }
 
-        while (csvReader.Read())
+        var csvHeader = new CsvHeader(Enumerable.Range(0, csvReader.HeaderRecord?.Length ?? csvReader.Parser.Count)
+                                                .Select((_, i) => csvReader.Configuration.GetDynamicPropertyName(new GetDynamicPropertyNameArgs(i, csvReader.Context)))
+                                                .ToArray());
+
+        do
         {
             CsvRecord record;
 
             try
             {
-                var values = new object[csvReader.HeaderRecord.Length];
+                var values = new object[csvHeader.FieldNames.Length];
 
-                for (var i = 0; i < csvReader.HeaderRecord.Length; i++)
+                for (var i = 0; i < csvHeader.FieldNames.Length; i++)
                 {
                     values[i] = csvReader.Parser[i];
                 }
@@ -53,7 +58,8 @@ public static class CsvReaderExtensions
             }
 
             yield return record;
-        }
+
+        } while (csvReader.Read());
     }
 
     public static async Task<IReadOnlyList<dynamic>> GetDynamicRecordsAsync(this CsvReader csvReader)
@@ -70,7 +76,7 @@ public static class CsvReaderExtensions
 
     public static async IAsyncEnumerable<dynamic> EnumerateDynamicRecordsAsync(this CsvReader csvReader)
     {
-        if (csvReader.HeaderRecord is null)
+        if (csvReader.Configuration.HasHeaderRecord && csvReader.HeaderRecord is null)
         {
             if (!await csvReader.ReadAsync().ConfigureAwait(false))
             {
@@ -80,19 +86,24 @@ public static class CsvReaderExtensions
             csvReader.ReadHeader();
         }
 
-        var csvHeader = new CsvHeader(csvReader.HeaderRecord
-                                               .Select((x, i) => csvReader.Configuration.PrepareHeaderForMatch(new PrepareHeaderForMatchArgs(x, i)))
-                                               .ToArray());
+        if (!await csvReader.ReadAsync().ConfigureAwait(false))
+        {
+            yield break;
+        }
 
-        while (await csvReader.ReadAsync().ConfigureAwait(false))
+        var csvHeader = new CsvHeader(Enumerable.Range(0, csvReader.HeaderRecord?.Length ?? csvReader.Parser.Count)
+                                                .Select((_, i) => csvReader.Configuration.GetDynamicPropertyName(new GetDynamicPropertyNameArgs(i, csvReader.Context)))
+                                                .ToArray());
+
+        do
         {
             CsvRecord record;
 
             try
             {
-                var values = new object[csvReader.HeaderRecord.Length];
+                var values = new object[csvHeader.FieldNames.Length];
 
-                for (var i = 0; i < csvReader.HeaderRecord.Length; i++)
+                for (var i = 0; i < csvHeader.FieldNames.Length; i++)
                 {
                     values[i] = csvReader.Parser[i];
                 }
@@ -112,6 +123,7 @@ public static class CsvReaderExtensions
             }
 
             yield return record;
-        }
+
+        } while (await csvReader.ReadAsync().ConfigureAwait(false));
     }
 }
