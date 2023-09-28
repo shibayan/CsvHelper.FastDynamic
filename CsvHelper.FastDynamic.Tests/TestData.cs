@@ -6,6 +6,8 @@ public static class TestData
 {
     public static readonly string CsvContent = "Id,Name,Location\r\n1,kazuakix,Wakayama\r\n2,daruyanagi,Ehime\r\n3,buchizo,Osaka\r\n";
 
+    public static readonly string CsvContentWithoutHeader = "1,kazuakix,Wakayama\r\n2,daruyanagi,Ehime\r\n3,buchizo,Osaka\r\n";
+
     public static readonly string CsvContentWithMissingHeader = "Id,Name\r\n1,kazuakix\r\n2,daruyanagi,Ehime\r\n3,buchizo\r\n";
 
     public static readonly IReadOnlyList<IDictionary<string, string>> CsvRecords = new[]

@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using CsvHelper.Configuration;
+
 using Xunit;
 
 namespace CsvHelper.FastDynamic.Tests;
@@ -71,19 +73,34 @@ public class CsvReaderTests
     {
         var csvReader = CreateInMemoryReader_WithMissingHeader();
 
-        var records = csvReader.GetDynamicRecords()
-                               .Cast<IDictionary<string, object>>()
-                               .ToArray();
+        var records = csvReader.GetDynamicRecords();
 
         Assert.NotNull(records);
-        Assert.Equal(3, records.Length);
+        Assert.Equal(3, records.Count);
 
         for (var i = 0; i < 3; i++)
         {
-            Assert.Equal(2, records[i].Count);
+            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
+            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
+            Assert.Null(records[i].Location);
+        }
+    }
 
-            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
-            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+    [Fact]
+    public void GetDynamicRecords_WithoutHeader()
+    {
+        var csvReader = CreateInMemoryReader_WithoutHeader();
+
+        var records = csvReader.GetDynamicRecords();
+
+        Assert.NotNull(records);
+        Assert.Equal(3, records.Count);
+
+        for (var i = 0; i < 3; i++)
+        {
+            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Column0);
+            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Column1);
+            Assert.Equal(TestData.CsvRecords[i]["Location"], records[i].Column2);
         }
     }
 
@@ -148,19 +165,34 @@ public class CsvReaderTests
     {
         var csvReader = CreateInMemoryReader_WithMissingHeader();
 
-        var records = (await csvReader.GetDynamicRecordsAsync())
-                      .Cast<IDictionary<string, object>>()
-                      .ToArray();
+        var records = await csvReader.GetDynamicRecordsAsync();
 
         Assert.NotNull(records);
-        Assert.Equal(3, records.Length);
+        Assert.Equal(3, records.Count);
 
         for (var i = 0; i < 3; i++)
         {
-            Assert.Equal(2, records[i].Count);
+            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Id);
+            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Name);
+            Assert.Null(records[i].Location);
+        }
+    }
 
-            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i]["Id"]);
-            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i]["Name"]);
+    [Fact]
+    public async Task GetDynamicRecordsAsync_WithoutHeader()
+    {
+        var csvReader = CreateInMemoryReader_WithoutHeader();
+
+        var records = await csvReader.GetDynamicRecordsAsync();
+
+        Assert.NotNull(records);
+        Assert.Equal(3, records.Count);
+
+        for (var i = 0; i < 3; i++)
+        {
+            Assert.Equal(TestData.CsvRecords[i]["Id"], records[i].Column0);
+            Assert.Equal(TestData.CsvRecords[i]["Name"], records[i].Column1);
+            Assert.Equal(TestData.CsvRecords[i]["Location"], records[i].Column2);
         }
     }
 
@@ -283,6 +315,15 @@ public class CsvReaderTests
     private CsvReader CreateInMemoryReader()
     {
         return new CsvReader(new StringReader(TestData.CsvContent), CultureInfo.InvariantCulture);
+    }
+
+    private CsvReader CreateInMemoryReader_WithoutHeader()
+    {
+        return new CsvReader(new StringReader(TestData.CsvContentWithoutHeader), new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            HasHeaderRecord = false,
+            GetDynamicPropertyName = args => $"Column{args.FieldIndex}"
+        });
     }
 
     private CsvReader CreateInMemoryReader_WithMissingHeader()
