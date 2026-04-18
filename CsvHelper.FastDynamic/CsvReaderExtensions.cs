@@ -64,7 +64,7 @@ public static class CsvReaderExtensions
 
     public static async Task<IReadOnlyList<dynamic>> GetDynamicRecordsAsync(this CsvReader csvReader)
     {
-        var records = new List<dynamic>();
+        List<dynamic> records = [];
 
         await foreach (var record in csvReader.EnumerateDynamicRecordsAsync())
         {
