@@ -21,7 +21,7 @@ internal sealed class CsvRecordMetaObject : DynamicMetaObject
 
     public override DynamicMetaObject BindGetIndex(GetIndexBinder binder, DynamicMetaObject[] indexes)
     {
-        var parameters = [indexes[0].Expression];
+        Expression[] parameters = [indexes[0].Expression];
 
         return CallMethod(s_getValueMethod, parameters);
     }
@@ -42,14 +42,14 @@ internal sealed class CsvRecordMetaObject : DynamicMetaObject
 
     public override DynamicMetaObject BindSetIndex(SetIndexBinder binder, DynamicMetaObject[] indexes, DynamicMetaObject value)
     {
-        var parameters = [indexes[0].Expression, value.Expression];
+        Expression[] parameters = [indexes[0].Expression, value.Expression];
 
         return CallMethod(s_setValueMethod, parameters);
     }
 
     public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
     {
-        var parameters = [Expression.Constant(binder.Name), value.Expression];
+        Expression[] parameters = [Expression.Constant(binder.Name), value.Expression];
 
         return CallMethod(s_setValueMethod, parameters);
     }
