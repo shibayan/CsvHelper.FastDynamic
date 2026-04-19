@@ -9,7 +9,7 @@ namespace CsvHelper.FastDynamic;
 // Thanks, from https://github.com/StackExchange/Dapper/blob/master/Dapper/SqlMapper.DapperRowMetaObject.cs
 internal sealed class CsvRecordMetaObject : DynamicMetaObject
 {
-    private static readonly string[] s_emptyArray = Array.Empty<string>();
+    private static readonly string[] s_emptyArray = [];
 
     private static readonly MethodInfo s_getValueMethod = typeof(IDictionary<string, object>).GetProperty("Item").GetGetMethod();
     private static readonly MethodInfo s_setValueMethod = typeof(CsvRecord).GetMethod(nameof(CsvRecord.SetValue), new[] { typeof(string), typeof(object) });
@@ -21,52 +21,35 @@ internal sealed class CsvRecordMetaObject : DynamicMetaObject
 
     public override DynamicMetaObject BindGetIndex(GetIndexBinder binder, DynamicMetaObject[] indexes)
     {
-        var parameters = new[]
-        {
-            indexes[0].Expression
-        };
+        Expression[] parameters = [indexes[0].Expression];
 
         return CallMethod(s_getValueMethod, parameters);
     }
 
     public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
     {
-        var parameters = new Expression[]
-        {
-            Expression.Constant(binder.Name)
-        };
+        Expression[] parameters = [Expression.Constant(binder.Name)];
 
         return CallMethod(s_getValueMethod, parameters);
     }
 
     public override DynamicMetaObject BindInvokeMember(InvokeMemberBinder binder, DynamicMetaObject[] args)
     {
-        var parameters = new Expression[]
-        {
-            Expression.Constant(binder.Name)
-        };
+        Expression[] parameters = [Expression.Constant(binder.Name)];
 
         return CallMethod(s_getValueMethod, parameters);
     }
 
     public override DynamicMetaObject BindSetIndex(SetIndexBinder binder, DynamicMetaObject[] indexes, DynamicMetaObject value)
     {
-        var parameters = new[]
-        {
-            indexes[0].Expression,
-            value.Expression
-        };
+        Expression[] parameters = [indexes[0].Expression, value.Expression];
 
         return CallMethod(s_setValueMethod, parameters);
     }
 
     public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
     {
-        var parameters = new[]
-        {
-            Expression.Constant(binder.Name),
-            value.Expression
-        };
+        Expression[] parameters = [Expression.Constant(binder.Name), value.Expression];
 
         return CallMethod(s_setValueMethod, parameters);
     }

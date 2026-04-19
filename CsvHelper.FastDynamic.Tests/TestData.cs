@@ -10,17 +10,17 @@ public static class TestData
 
     public static readonly string CsvContentWithMissingHeader = "Id,Name\r\n1,kazuakix\r\n2,daruyanagi,Ehime\r\n3,buchizo\r\n";
 
-    public static readonly IReadOnlyList<IDictionary<string, string>> CsvRecords = new[]
-    {
-        new Dictionary<string, string> { { "Id", "1" }, { "Name", "kazuakix" }, { "Location", "Wakayama" } },
-        new Dictionary<string, string> { { "Id", "2" }, { "Name", "daruyanagi" }, { "Location", "Ehime" } },
-        new Dictionary<string, string> { { "Id", "3" }, { "Name", "buchizo" }, { "Location", "Osaka" } }
-    };
+    public static readonly IReadOnlyList<IDictionary<string, string>> CsvRecords =
+    [
+        new Dictionary<string, string> { ["Id"] = "1", ["Name"] = "kazuakix", ["Location"] = "Wakayama" },
+        new Dictionary<string, string> { ["Id"] = "2", ["Name"] = "daruyanagi", ["Location"] = "Ehime" },
+        new Dictionary<string, string> { ["Id"] = "3", ["Name"] = "buchizo", ["Location"] = "Osaka" }
+    ];
 
-    public static readonly IReadOnlyList<object> CsvAnonymousRecords = new[]
-    {
+    public static readonly IReadOnlyList<object> CsvAnonymousRecords =
+    [
         new { Id = 1, Name = "kazuakix", Location = "Wakayama" },
         new { Id = 2, Name = "daruyanagi", Location = "Ehime" },
         new { Id = 3, Name = "buchizo", Location = "Osaka" }
-    };
+    ];
 }

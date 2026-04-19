@@ -15,7 +15,7 @@ internal sealed class CsvHeader
     {
         _fieldNames = fieldNames ?? throw new ArgumentNullException(nameof(fieldNames));
 
-        _fieldNameLookup = new Dictionary<string, int>(fieldNames.Length, StringComparer.Ordinal);
+        _fieldNameLookup = new(fieldNames.Length, StringComparer.Ordinal);
 
         for (var i = fieldNames.Length - 1; i >= 0; i--)
         {
