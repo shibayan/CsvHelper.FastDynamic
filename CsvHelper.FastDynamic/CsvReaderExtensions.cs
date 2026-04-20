@@ -40,7 +40,14 @@ public static class CsvReaderExtensions
 
                 for (var i = 0; i < csvHeader.FieldNames.Length; i++)
                 {
-                    values[i] = csvReader.Parser[i];
+                    if (i >= csvReader.Parser.Count)
+                    {
+                        values[i] = default;
+                    }
+                    else
+                    {
+                        values[i] = csvReader.Parser[i];
+                    }
                 }
 
                 record = new CsvRecord(csvHeader, values);
@@ -105,7 +112,14 @@ public static class CsvReaderExtensions
 
                 for (var i = 0; i < csvHeader.FieldNames.Length; i++)
                 {
-                    values[i] = csvReader.Parser[i];
+                    if (i >= csvReader.Parser.Count)
+                    {
+                        values[i] = default;
+                    }
+                    else
+                    {
+                        values[i] = csvReader.Parser[i];
+                    }
                 }
 
                 record = new CsvRecord(csvHeader, values);
